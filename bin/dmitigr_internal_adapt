@@ -1,0 +1,123 @@
+#! /bin/bash
+# Copyright (C) 2019 Dmitry Igrishin
+#
+# This software is provided 'as-is', without any express or implied
+# warranty. In no event will the authors be held liable for any damages
+# arising from the use of this software.
+
+# Permission is granted to anyone to use this software for any purpose,
+# including commercial applications, and to alter it and redistribute it
+# freely, subject to the following restrictions:
+
+# 1. The origin of this software must not be misrepresented; you must not
+#    claim that you wrote the original software. If you use this software
+#    in a product, an acknowledgment in the product documentation would be
+#    appreciated but is not required.
+# 2. Altered source versions must be plainly marked as such, and must not be
+#    misrepresented as being the original software.
+# 3. This notice may not be removed or altered from any source distribution.
+
+. "$(dirname "$0")"/dmitigr_internal_basics.sh || exit 1
+
+usage()
+{
+  err 1 "$script_name - adapt internal library source(-s) into another project
+
+Usage: $script_name -i includes_prefix [-n namespaces_prefix] [-m macros_prefix] [-g guards_prefix] [file-or-directory]
+
+Options:
+  -i prefix - specifies new prefix for #include directives
+  -n prefix - specifies new prefix for namespaces
+  -m prefix - specifies new prefix for macros
+  -g prefix - specifies new prefix for include guards
+
+By default: file-or-directory=\$(pwd)"
+}
+
+# Parsing options
+while getopts i:n:m:g: opt
+do
+  case $opt in
+    i) i_option=$OPTARG ;;
+    n) n_option=$OPTARG ;;
+    m) m_option=$OPTARG ;;
+    g) g_option=$OPTARG ;;
+    ?) usage ;;
+  esac
+done
+shift `expr $OPTIND - 1`
+
+if [ X"$i_option" = X"" ]; then
+  usage
+fi
+
+includes_prefix=$i_option
+if [ $# -gt 0 ]; then
+  file=$1
+else
+  file=.
+fi
+escaped_includes_prefix=$(echo "$includes_prefix" | sed -e '{s/\//\\\//g}') # escaping slashes in the prefix: a/b -> a\/b
+
+if [ X"$n_option" = X"" ]; then
+  namespaces_prefix=$(echo "$includes_prefix" | sed -e '{s/\//::/g}')
+  namespaces_prefix=${namespaces_prefix,,}
+else
+  namespaces_prefix=$n_option
+fi
+
+if [ X"$m_option" = X"" ]; then
+  macros_prefix=$(echo "$includes_prefix" | sed -e '{s/\//_/g}')
+  macros_prefix=${macros_prefix^^}
+else
+  macros_prefix=$m_option
+fi
+
+if [ X"$g_option" = X"" ]; then
+  guards_prefix=$macros_prefix
+else
+  guards_prefix=$g_option
+fi
+
+sed_transform_includes_src="
+s/\
+\(\s*\)#\(\s*\)include\(\s*\)\"dmitigr\/internal/\
+\1#\2include\3\"${escaped_includes_prefix}/g
+"
+sed_transform_namespaces_src="
+s/\
+dmitigr::internal/\
+${namespaces_prefix}/g
+"
+sed_transform_macros_src="
+s/\
+\DMITIGR_INTERNAL_\([A-Z0-9][_A-Z0-9]\+[A-Z0-9]\)/\
+${macros_prefix}_\1/g
+"
+sed_transform_guards_src="
+s/${macros_prefix}_\([A-Z0-9][_A-Z0-9]\+[A-Z0-9]\)_HXX/\
+${guards_prefix}_\1_HXX/g
+"
+
+sedsrc="{
+$sed_transform_includes_src
+
+$sed_transform_namespaces_src
+
+$sed_transform_macros_src
+
+$sed_transform_guards_src
+}"
+
+if [ -f "$file" ]; then
+  sed -i -e "$sedsrc" "$file" || exit $?
+elif [ -d "$file" ]; then
+  find "$file" -type f \( -name \*\.[ch][px][px] -o -name \*\.[ch][px][px]\.in \) -exec \
+       "$(dirname "$0")"/dmitigr_internal_adapt \
+       -i "$includes_prefix" \
+       -n "$namespaces_prefix" \
+       -m "$macros_prefix" \
+       -g "$guards_prefix" {} \; || exit $?
+else
+  err 2 "file \"$file\" is not a regular file or directory"
+fi

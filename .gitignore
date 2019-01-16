@@ -1,0 +1,10 @@
+*~
+*.[oa]
+*build*
+.DS_Store
+BROWSE
+.idea
+.vs
+cmake-build-*
+test*.cpp
+test
