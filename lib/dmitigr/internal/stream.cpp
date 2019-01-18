@@ -18,7 +18,7 @@ Read_exception::Read_exception(const std::error_condition condition)
 
 Read_exception::Read_exception(std::error_condition condition, std::string&& incomplete_result)
   : system_error{condition.value(), error_category()}
-  , incomplete_result_{std::move(incomplete_result_)}
+  , incomplete_result_{std::move(incomplete_result)}
 {}
 
 const std::string& Read_exception::incomplete_result() const
