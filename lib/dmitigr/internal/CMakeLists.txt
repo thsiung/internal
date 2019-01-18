@@ -77,6 +77,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     # FIXME: GDB 7.7 doesn't print info of rvalues' that are function arguments
     # properly when compiled with -gdwarf-4. So, using -gdwarf-3 instead.
     target_compile_options(dmitigr_internal PRIVATE
+      -fPIC
       -gdwarf-3
       -pedantic
       -Wall
@@ -91,6 +92,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
       -Wswitch)
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(dmitigr_internal PRIVATE
+      -fPIC
       -pedantic
       -Weverything)
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
