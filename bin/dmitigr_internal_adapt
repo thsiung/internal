@@ -95,8 +95,8 @@ s/\
 ${macros_prefix}_\1/g
 "
 sed_transform_guards_src="
-s/${macros_prefix}_\([A-Z0-9][_A-Z0-9]\+[A-Z0-9]\)_HXX/\
-${guards_prefix}_\1_HXX/g
+s/${macros_prefix}_\([A-Z0-9][_A-Z0-9]\+[A-Z0-9]\)_HPP/\
+${guards_prefix}_\1_HPP/g
 "
 
 sedsrc="{
