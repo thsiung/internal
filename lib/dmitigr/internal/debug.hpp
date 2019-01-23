@@ -28,10 +28,10 @@ constexpr bool is_debug_enabled = true;
 
 #define DMITIGR_INTERNAL_ASSERT__(a, t) {                               \
     if (!(a)) {                                                         \
-      DMITIGR_INTERNAL_DOUT__("assertion '%s' failed\n", #a)            \
+      DMITIGR_INTERNAL_DOUT__("assertion (%s) failed\n", #a)            \
         if constexpr (t) {                                              \
-          throw std::logic_error(std::string("assertion '" #a "' failed at " __FILE__ ":") \
-            .append(std::to_string(int(__LINE__))));                    \
+          throw std::logic_error{std::string{"assertion (" #a ") failed at " __FILE__ ":"} \
+            .append(std::to_string(int(__LINE__)))};                    \
         }                                                               \
     }                                                                   \
   }
@@ -54,7 +54,7 @@ constexpr bool is_debug_enabled = true;
       if constexpr (dmitigr::internal::is_debug_enabled) {              \
         message.append(" at " __FILE__ ":").append(std::to_string(int(__LINE__))); \
       }                                                                 \
-      throw std::logic_error(message);                                  \
+      throw std::logic_error{message};                                  \
     }                                                                   \
   }
 
