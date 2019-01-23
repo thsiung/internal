@@ -48,9 +48,9 @@ constexpr bool is_debug_enabled = true;
 
 // -----------------------------------------------------------------------------
 
-#define DMITIGR_INTERNAL_REQUIRE__(r) {                                 \
-    if (!(r)) {                                                         \
-      std::string message{"API requirement '" #r "' violated"};         \
+#define DMITIGR_INTERNAL_REQUIRE__(req, msg) {                          \
+    if (!(req)) {                                                       \
+      std::string message{"API requirement (" #msg ") violated"};       \
       if constexpr (dmitigr::internal::is_debug_enabled) {              \
         message.append(" at " __FILE__ ":").append(std::to_string(int(__LINE__))); \
       }                                                                 \
@@ -58,6 +58,7 @@ constexpr bool is_debug_enabled = true;
     }                                                                   \
   }
 
-#define DMITIGR_INTERNAL_REQUIRE(r) DMITIGR_INTERNAL_REQUIRE__(r)
+#define DMITIGR_INTERNAL_REQUIRE(req)       DMITIGR_INTERNAL_REQUIRE__(req, req)
+#define DMITIGR_INTERNAL_REQUIRE2(req, msg) DMITIGR_INTERNAL_REQUIRE__(req, msg)
 
 #endif  // DMITIGR_INTERNAL_DEBUG_HPP
