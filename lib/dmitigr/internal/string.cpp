@@ -91,11 +91,26 @@ std::string str::sparsed_string(const std::string& input, const std::string& sep
   return result;
 }
 
-std::string& str::terminate_string(std::string& str, const char c)
+void str::terminate_string(std::string& str, const char c)
 {
   if (str.empty() || str.back() != c)
     str += c;
-  return str;
+}
+
+void str::lowercase(std::string& str)
+{
+  auto b = begin(str);
+  auto e = end(str);
+  const auto l = std::locale{};
+  std::transform(b, e, b, [&l](const char c) { return std::tolower(c, l); });
+}
+
+void str::uppercase(std::string& str)
+{
+  auto b = begin(str);
+  auto e = end(str);
+  const auto l = std::locale{};
+  std::transform(b, e, b, [&l](const char c) { return std::toupper(c, l); });
 }
 
 // -----------------------------------------------------------------------------

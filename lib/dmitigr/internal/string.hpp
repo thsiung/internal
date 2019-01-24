@@ -152,7 +152,21 @@ std::string sparsed_string(const std::string& input, const std::string& separato
  * @par Effects
  * `(str.back() == c)`
  */
-std::string& terminate_string(std::string& str, char c);
+void terminate_string(std::string& str, char c);
+
+/**
+ * @internal
+ *
+ * Replaces all uppercase characters in `str` by the corresponding lowercase characters.
+ */
+void lowercase(std::string& str);
+
+/**
+ * @internal
+ *
+ * Replaces all lowercase characters in `str` by the corresponding uppercase characters.
+ */
+void uppercase(std::string& str);
 
 // -----------------------------------------------------------------------------
 // Substrings
