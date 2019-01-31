@@ -24,7 +24,7 @@ By default, header-only mode is enabled. Thus, no build required.
 
 **Currently for all dmitigr_* stuff  which are dependent on `dmitigr_internal`,
 header-only version of `dmitigr_internal` is good enough. Thus, only installation
-step is required.**
+step is required**.
 
 But if one wants, only static library can be build at the moment.
 
