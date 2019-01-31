@@ -27,4 +27,8 @@ bool is_hostname_valid(const std::string& hostname);
 
 } // namespace dmitigr::internal::net
 
+#ifdef DMITIGR_INTERNAL_HEADER_ONLY
+#include "dmitigr/internal/net.cpp"
+#endif
+
 #endif  // DMITIGR_INTERNAL_NET_HPP

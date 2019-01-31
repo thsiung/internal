@@ -9,7 +9,7 @@
 
 namespace str = dmitigr::internal::string;
 
-const char* str::next_non_space_pointer(const char* p) noexcept
+inline const char* str::next_non_space_pointer(const char* p) noexcept
 {
   if (p)
     while (*p != '\0' && std::isspace(*p, std::locale{}))
@@ -17,7 +17,7 @@ const char* str::next_non_space_pointer(const char* p) noexcept
   return p;
 }
 
-const char* str::coalesce(std::initializer_list<const char*> literals) noexcept
+inline const char* str::coalesce(std::initializer_list<const char*> literals) noexcept
 {
   for (const auto l : literals)
     if (l)
@@ -25,13 +25,13 @@ const char* str::coalesce(std::initializer_list<const char*> literals) noexcept
   return nullptr;
 }
 
-std::size_t str::line_number_by_position(const std::string& str, const std::size_t pos)
+inline std::size_t str::line_number_by_position(const std::string& str, const std::size_t pos)
 {
   DMITIGR_INTERNAL_ASSERT(pos < str.size());
   return std::count(cbegin(str), cbegin(str) + pos, '\n') + 1;
 }
 
-std::pair<std::size_t, std::size_t>
+inline std::pair<std::size_t, std::size_t>
 str::line_column_numbers_by_position(const std::string& str, const std::size_t pos)
 {
   DMITIGR_INTERNAL_ASSERT(pos < str.size());
@@ -48,7 +48,7 @@ str::line_column_numbers_by_position(const std::string& str, const std::size_t p
 
 // -----------------------------------------------------------------------------
 
-std::string str::random_string(const std::string& palette, const std::string::size_type size)
+inline std::string str::random_string(const std::string& palette, const std::string::size_type size)
 {
   std::string result;
   result.resize(size);
@@ -60,7 +60,7 @@ std::string str::random_string(const std::string& palette, const std::string::si
   return result;
 }
 
-std::string str::random_string(const char beg, const char end, const std::string::size_type size)
+inline std::string str::random_string(const char beg, const char end, const std::string::size_type size)
 {
   DMITIGR_INTERNAL_ASSERT(beg < end);
   std::string result;
@@ -75,7 +75,7 @@ std::string str::random_string(const char beg, const char end, const std::string
 
 // -----------------------------------------------------------------------------
 
-std::string str::sparsed_string(const std::string& input, const std::string& separator)
+inline std::string str::sparsed_string(const std::string& input, const std::string& separator)
 {
   std::string result;
   if (!input.empty()) {
@@ -91,13 +91,13 @@ std::string str::sparsed_string(const std::string& input, const std::string& sep
   return result;
 }
 
-void str::terminate_string(std::string& str, const char c)
+inline void str::terminate_string(std::string& str, const char c)
 {
   if (str.empty() || str.back() != c)
     str += c;
 }
 
-void str::lowercase(std::string& str)
+inline void str::lowercase(std::string& str)
 {
   auto b = begin(str);
   auto e = end(str);
@@ -105,7 +105,7 @@ void str::lowercase(std::string& str)
   std::transform(b, e, b, [&l](const char c) { return std::tolower(c, l); });
 }
 
-void str::uppercase(std::string& str)
+inline void str::uppercase(std::string& str)
 {
   auto b = begin(str);
   auto e = end(str);
@@ -115,7 +115,7 @@ void str::uppercase(std::string& str)
 
 // -----------------------------------------------------------------------------
 
-std::string::size_type str::position_of_non_space(const std::string& str,
+inline std::string::size_type str::position_of_non_space(const std::string& str,
   const std::string::size_type pos)
 {
   DMITIGR_INTERNAL_ASSERT(pos <= str.size());
@@ -123,7 +123,7 @@ std::string::size_type str::position_of_non_space(const std::string& str,
   return std::find_if(b + pos, cend(str), is_non_space_character) - b;
 }
 
-std::pair<std::string, std::string::size_type>
+inline std::pair<std::string, std::string::size_type>
 str::substring_if_simple_identifier(const std::string& str, const std::string::size_type pos)
 {
   DMITIGR_INTERNAL_ASSERT(pos <= str.size());
@@ -131,14 +131,14 @@ str::substring_if_simple_identifier(const std::string& str, const std::string::s
     std::make_pair(std::string{}, pos);
 }
 
-std::pair<std::string, std::string::size_type>
+inline std::pair<std::string, std::string::size_type>
 str::substring_if_no_spaces(const std::string& str, const std::string::size_type pos)
 {
   return substring_if(str, is_non_space_character, pos);
 }
 // -----------------------------------------------------------------------------
 
-std::pair<std::string, std::string::size_type>
+inline std::pair<std::string, std::string::size_type>
 str::unquoted_substring(const std::string& str, std::string::size_type pos)
 {
   DMITIGR_INTERNAL_ASSERT(pos <= str.size());

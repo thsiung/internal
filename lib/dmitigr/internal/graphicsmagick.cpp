@@ -11,12 +11,12 @@
 
 namespace gm = dmitigr::internal::img::graphicsmagick;
 
-void gm::init(const char* const app_path)
+inline void gm::init(const char* const app_path)
 {
   ::Magick::InitializeMagick(app_path);
 }
 
-const char* gm::file_type_c_str(const File_type file_type)
+inline const char* gm::file_type_c_str(const File_type file_type)
 {
   switch (file_type) {
   case File_type::gif:  { return "GIF"; }
@@ -25,7 +25,7 @@ const char* gm::file_type_c_str(const File_type file_type)
   }
 }
 
-void gm::resize(std::istream& input,
+inline void gm::resize(std::istream& input,
   std::ostream& output,
   const unsigned int output_x,
   const unsigned int output_y,

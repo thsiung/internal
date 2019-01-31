@@ -46,4 +46,8 @@ std::size_t read(int fd, void* buffer, unsigned int count);
 
 } // namespace dmitigr::internal::os
 
+#ifdef DMITIGR_INTERNAL_HEADER_ONLY
+#include "dmitigr/internal/os.cpp"
+#endif
+
 #endif  // DMITIGR_INTERNAL_OS_HPP

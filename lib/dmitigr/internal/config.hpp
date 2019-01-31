@@ -53,4 +53,8 @@ private:
 
 } // namespace dmitigr::internal::config
 
+#ifdef DMITIGR_INTERNAL_HEADER_ONLY
+#include "dmitigr/internal/config.cpp"
+#endif
+
 #endif  // DMITIGR_INTERNAL_CONFIG_HPP

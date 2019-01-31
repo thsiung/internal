@@ -12,8 +12,6 @@
  */
 
 #ifdef _WIN32
-  #define NOMINMAX
-  #include <windows.h> // APIENTRY macro definition
   #ifdef DMITIGR_INTERNAL_DLL_BUILDING
     #define DMITIGR_INTERNAL_API __declspec(dllexport)
   #else
@@ -25,7 +23,6 @@
   #endif
 #else /* Unix */
   #define DMITIGR_INTERNAL_API
-  #define APIENTRY
 #endif
 
 #endif // DMITIGR_INTERNAL_DLL_HPP

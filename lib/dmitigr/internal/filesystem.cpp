@@ -10,7 +10,7 @@
 
 namespace fs = dmitigr::internal::filesystem;
 
-std::vector<std::filesystem::path> fs::files_by_extension(const std::filesystem::path& root,
+inline std::vector<std::filesystem::path> fs::files_by_extension(const std::filesystem::path& root,
   const std::filesystem::path& extension, const bool recursive, const bool include_heading)
 {
   std::vector<std::filesystem::path> result;
@@ -43,7 +43,7 @@ std::vector<std::filesystem::path> fs::files_by_extension(const std::filesystem:
   return result;
 }
 
-std::string fs::read_to_string(const std::filesystem::path& path)
+inline std::string fs::read_to_string(const std::filesystem::path& path)
 {
   std::ifstream stream(path, std::ios_base::in | std::ios_base::binary);
   if (stream)
@@ -52,7 +52,7 @@ std::string fs::read_to_string(const std::filesystem::path& path)
     throw std::runtime_error{"unable to open file \"" + path.generic_string() + "\""};
 }
 
-std::filesystem::path fs::relative_root_path(const std::filesystem::path& indicator)
+inline std::filesystem::path fs::relative_root_path(const std::filesystem::path& indicator)
 {
   auto path = std::filesystem::current_path();
   while (true) {

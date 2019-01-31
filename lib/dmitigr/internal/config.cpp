@@ -12,13 +12,13 @@
 
 namespace dmitigr::internal::config {
 
-Flat::Flat(const std::filesystem::path& path)
+inline Flat::Flat(const std::filesystem::path& path)
   : parameters_{parsed_config(path)}
 {
   DMITIGR_INTERNAL_ASSERT(is_invariant_ok());
 }
 
-const std::optional<std::string>& Flat::string_parameter(const std::string& name) const
+inline const std::optional<std::string>& Flat::string_parameter(const std::string& name) const
 {
   if (const auto e = cend(parameters_), i = parameters_.find(name); i != e)
     return i->second;
@@ -26,7 +26,7 @@ const std::optional<std::string>& Flat::string_parameter(const std::string& name
     return null_string_parameter();
 }
 
-std::optional<bool> Flat::boolean_parameter(const std::string& name) const
+inline std::optional<bool> Flat::boolean_parameter(const std::string& name) const
 {
   if (const auto& str_param = string_parameter(name)) {
     const auto& str = *str_param;
@@ -40,12 +40,12 @@ std::optional<bool> Flat::boolean_parameter(const std::string& name) const
     return std::nullopt;
 }
 
-const std::map<std::string, std::optional<std::string>>& Flat::parameters() const
+inline const std::map<std::string, std::optional<std::string>>& Flat::parameters() const
 {
   return parameters_;
 }
 
-std::pair<std::string, std::string> Flat::parsed_config_entry(const std::string& line)
+inline std::pair<std::string, std::string> Flat::parsed_config_entry(const std::string& line)
 {
   std::string param;
   std::string value;
@@ -90,7 +90,7 @@ std::pair<std::string, std::string> Flat::parsed_config_entry(const std::string&
   return {std::move(param), std::move(value)};
 }
 
-std::map<std::string, std::optional<std::string>> Flat::parsed_config(const std::filesystem::path& path)
+inline std::map<std::string, std::optional<std::string>> Flat::parsed_config(const std::filesystem::path& path)
 {
   std::map<std::string, std::optional<std::string>> result;
   static const auto is_nor_empty_nor_commented = [](const std::string& line)
@@ -111,12 +111,12 @@ std::map<std::string, std::optional<std::string>> Flat::parsed_config(const std:
   return result;
 }
 
-bool Flat::is_invariant_ok() const
+inline bool Flat::is_invariant_ok() const
 {
   return true;
 }
 
-const std::optional<std::string>& Flat::null_string_parameter()
+inline const std::optional<std::string>& Flat::null_string_parameter()
 {
   static const std::optional<std::string> result;
   return result;

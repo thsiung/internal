@@ -9,7 +9,7 @@
 
 namespace dmitigr::internal::console {
 
-void Command::throw_invalid_usage(std::string details) const
+inline void Command::throw_invalid_usage(std::string details) const
 {
   std::string message = "invalid usage of the \"" + name() + "\" command\n";
   if (!details.empty())
@@ -17,7 +17,7 @@ void Command::throw_invalid_usage(std::string details) const
   throw std::logic_error{std::move(message.append(usage()))};
 }
 
-std::optional<std::string> Command::option_argument(const std::string& value, const bool is_optional) const
+inline std::optional<std::string> Command::option_argument(const std::string& value, const bool is_optional) const
 {
   if (const auto pos = value.find('='); pos != std::string::npos)
     return pos < value.size() ? value.substr(pos + 1) : std::string{};
@@ -27,7 +27,7 @@ std::optional<std::string> Command::option_argument(const std::string& value, co
     throw_invalid_usage("no argument for the \"" + value.substr(0, pos) + "\" option specified");
 }
 
-void Command::check_no_option_argument(const std::string& value) const
+inline void Command::check_no_option_argument(const std::string& value) const
 {
   DMITIGR_INTERNAL_ASSERT(value.find("--") == 0);
   if (const auto pos = value.find('='); pos != std::string::npos)
@@ -42,7 +42,7 @@ void Command::check_no_option_argument(const std::string& value) const
  * @param parse_option - The callback that will be called for each option.
  * The parser must accepts one argument: the string of the option to parse.
  */
-auto Command::parse_options(Option_iterator i, const Option_iterator e, Option_parser parse_option) -> Option_iterator
+inline auto Command::parse_options(Option_iterator i, const Option_iterator e, Option_parser parse_option) -> Option_iterator
 {
   for (; i != e && *i != "--" && (i->find("--") == 0); ++i)
     parse_option(*i);
@@ -53,7 +53,7 @@ auto Command::parse_options(Option_iterator i, const Option_iterator e, Option_p
 
 namespace console = dmitigr::internal::console;
 
-std::pair<std::string, std::vector<std::string>> console::command_and_options(const int argc, const char* const* argv)
+inline std::pair<std::string, std::vector<std::string>> console::command_and_options(const int argc, const char* const* argv)
 {
   DMITIGR_INTERNAL_ASSERT(argc > 1);
   std::string result1{argv[1]};

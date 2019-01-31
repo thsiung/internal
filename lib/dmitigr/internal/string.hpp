@@ -305,4 +305,8 @@ to_string(Number value, const Number base = 10)
 
 } // namespace dmitigr::internal::string
 
+#ifdef DMITIGR_INTERNAL_HEADER_ONLY
+#include "dmitigr/internal/string.cpp"
+#endif
+
 #endif  // DMITIGR_INTERNAL_STRING_HPP

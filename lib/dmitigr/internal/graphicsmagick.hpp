@@ -39,4 +39,8 @@ void resize(std::istream& input,
 
 } // namespace dmitigr::internal::img::graphicsmagick
 
+#ifdef DMITIGR_INTERNAL_HEADER_ONLY
+#include "dmitigr/internal/graphicsmagick.cpp"
+#endif
+
 #endif  // DMITIGR_INTERNAL_GRAPHICSMAGICK_HPP

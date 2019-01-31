@@ -35,7 +35,7 @@ inline bool is_hostname_char__(const char ch)
 
 } // namespace
 
-bool net::is_ip_address_valid(const std::string& address)
+inline bool net::is_ip_address_valid(const std::string& address)
 {
   unsigned char buf[sizeof (::in6_addr)];
   for (const auto family : {AF_INET, AF_INET6}) {
@@ -50,7 +50,7 @@ bool net::is_ip_address_valid(const std::string& address)
   return false;
 }
 
-bool net::is_hostname_valid(const std::string& hostname)
+inline bool net::is_hostname_valid(const std::string& hostname)
 {
   constexpr std::string::size_type max_length{253};
   if (hostname.empty() || hostname.size() > max_length)

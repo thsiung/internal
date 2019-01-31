@@ -12,33 +12,33 @@ namespace stream = dmitigr::internal::stream;
 
 namespace dmitigr::internal::stream {
 
-Read_exception::Read_exception(const std::error_condition condition)
+inline Read_exception::Read_exception(const std::error_condition condition)
   : system_error{condition.value(), error_category()}
 {}
 
-Read_exception::Read_exception(std::error_condition condition, std::string&& incomplete_result)
+inline Read_exception::Read_exception(std::error_condition condition, std::string&& incomplete_result)
   : system_error{condition.value(), error_category()}
   , incomplete_result_{std::move(incomplete_result)}
 {}
 
-const std::string& Read_exception::incomplete_result() const
+inline const std::string& Read_exception::incomplete_result() const
 {
   return incomplete_result_;
 }
 
-const char* Read_exception::what() const noexcept
+inline const char* Read_exception::what() const noexcept
 {
   return "dmitigr::internal::stream::Read_exception";
 }
 
 // -----------------------------------------------------------------------------
 
-const char* Error_category::name() const noexcept
+inline const char* Error_category::name() const noexcept
 {
   return "dmitigr_internal_stream_error";
 }
 
-std::string Error_category::message(const int ev) const
+inline std::string Error_category::message(const int ev) const
 {
   return "dmitigr_internal_stream_error " + std::to_string(ev);
 }
@@ -47,25 +47,25 @@ std::string Error_category::message(const int ev) const
 
 // -----------------------------------------------------------------------------
 
-auto stream::error_category() noexcept -> const Error_category&
+inline auto stream::error_category() noexcept -> const Error_category&
 {
   static Error_category result;
   return result;
 }
 
-std::error_code stream::make_error_code(Read_errc errc) noexcept
+inline std::error_code stream::make_error_code(Read_errc errc) noexcept
 {
   return std::error_code(int(errc), error_category());
 }
 
-std::error_condition stream::make_error_condition(Read_errc errc) noexcept
+inline std::error_condition stream::make_error_condition(Read_errc errc) noexcept
 {
   return std::error_condition(int(errc), error_category());
 }
 
 // -----------------------------------------------------------------------------
 
-std::string stream::read_to_string(std::istream& input)
+inline std::string stream::read_to_string(std::istream& input)
 {
   constexpr std::size_t buffer_size{512};
   std::string result;
@@ -76,7 +76,7 @@ std::string stream::read_to_string(std::istream& input)
   return result;
 }
 
-std::string stream::read_simple_phrase_to_string(std::istream& input)
+inline std::string stream::read_simple_phrase_to_string(std::istream& input)
 {
   std::string result;
 

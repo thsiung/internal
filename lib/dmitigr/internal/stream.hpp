@@ -112,4 +112,8 @@ std::string read_simple_phrase_to_string(std::istream& input);
 
 } // namespace dmitigr::internal::stream
 
+#ifdef DMITIGR_INTERNAL_HEADER_ONLY
+#include "dmitigr/internal/stream.cpp"
+#endif
+
 #endif  // DMITIGR_INTERNAL_STREAM_HPP

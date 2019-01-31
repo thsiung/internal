@@ -81,4 +81,8 @@ std::pair<std::string, std::vector<std::string>> command_and_options(const int a
 
 } // namespace dmitigr::internal::console
 
+#ifdef DMITIGR_INTERNAL_HEADER_ONLY
+#include "dmitigr/internal/console.cpp"
+#endif
+
 #endif // DMITIGR_INTERNAL_CONSOLE_HPP

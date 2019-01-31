@@ -18,17 +18,11 @@ add_definitions(-DDMITIGR_INTERNAL_VERSION_PART2=${VERSION_PART2})
 
 # ------------------------------------------------------------------------------
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug
-    CACHE
-    STRING "Build type: Debug Release RelWithDebInfo MinSizeRel."
-    FORCE)
-endif()
-message("Build type is ${CMAKE_BUILD_TYPE}")
+# Header-only library by default.
+set(BUILD_SHARED_LIBS OFF)
+set(DMITIGR_INTERNAL_HEADER_ONLY ON
+  CACHE BOOL "Header-only library" FORCE)
 
-# ------------------------------------------------------------------------------
-
-set(BUILD_SHARED_LIBS OFF) # Only static library for now.
 if(BUILD_SHARED_LIBS)
   message("Building shared library enabled.")
   add_definitions(-DDMITIGR_INTERNAL_DLL_BUILDING)
@@ -36,6 +30,20 @@ if(BUILD_SHARED_LIBS)
 else()
   message("Building shared library disabled.")
   set(DMITIGR_INTERNAL_DLL 0)
+endif()
+
+if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
+  if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug
+      CACHE
+      STRING "Build type: Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+  endif()
+  message("Build type is ${CMAKE_BUILD_TYPE}")
+  message("Header-only mode disabled")
+else()
+  message("Header-only mode enabled")
+  add_definitions(-DDMITIGR_INTERNAL_HEADER_ONLY)
 endif()
 
 # ------------------------------------------------------------------------------

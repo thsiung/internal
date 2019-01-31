@@ -43,7 +43,7 @@ inline char* getcwd__(char* buffer, std::size_t size)
 #endif
 }
 
-char* dmint_os_cwd()
+inline char* dmint_os_cwd()
 {
   constexpr std::size_t max_path_size = 128 * 128;
   std::size_t sz = 16;
@@ -73,13 +73,13 @@ char* dmint_os_cwd()
 
 } // namespace
 
-std::string os::cwd()
+inline std::string os::cwd()
 {
   std::unique_ptr<char[], void (*)(void*)> guarded{dmint_os_cwd(), &std::free};
   return guarded ? guarded.get() : std::string{};
 }
 
-std::string os::current_username()
+inline std::string os::current_username()
 {
   std::string result;
 #ifdef _WIN32
@@ -116,7 +116,7 @@ std::string os::current_username()
 
 // -----------------------------------------------------------------------------
 
-std::size_t io::seek(const int fd, long const offset, const Origin whence)
+inline std::size_t io::seek(const int fd, long const offset, const Origin whence)
 {
 #ifdef _WIN32
   const auto result = ::_lseek(fd, offset, int(whence));
@@ -131,7 +131,7 @@ std::size_t io::seek(const int fd, long const offset, const Origin whence)
     return std::size_t(result);
 }
 
-std::size_t io::read(const int fd, void* const buffer, const unsigned int count)
+inline std::size_t io::read(const int fd, void* const buffer, const unsigned int count)
 {
   DMITIGR_INTERNAL_ASSERT(buffer);
 

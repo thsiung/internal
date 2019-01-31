@@ -79,4 +79,8 @@ std::filesystem::path relative_root_path(const std::filesystem::path& indicator)
 
 } // namespace dmitigr::internal::filesystem
 
+#ifdef DMITIGR_INTERNAL_HEADER_ONLY
+#include "dmitigr/internal/filesystem.cpp"
+#endif
+
 #endif  // DMITIGR_INTERNAL_FILESYSTEM_HPP
