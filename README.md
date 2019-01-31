@@ -46,8 +46,8 @@ Installation on Linux
 ---------------------
 
     $ git clone https://github.com/dmitigr/internal.git
-    $ mkdir -p internal/bld
-    $ cd internal/bld
+    $ mkdir -p internal/build
+    $ cd internal/build
     $ cmake ..
     $ make install *may require administrator privileges*
 
@@ -57,8 +57,8 @@ Installation on Microsoft Windows
 Run the Developer Command Prompt for Visual Studio and type:
 
     > git clone https://github.com/dmitigr/internal.git
-    > mkdir internal\bld
-    > cd internal\bld
+    > mkdir internal\build
+    > cd internal\build
     > cmake -G "Visual Studio 15 2017 Win64" ..
     > cmake -P cmake_install.cmake *may require administrator privileges*
 
