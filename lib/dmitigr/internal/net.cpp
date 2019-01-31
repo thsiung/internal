@@ -2,6 +2,8 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
+#include "dmitigr/internal/header_only.hpp"
+
 #include "dmitigr/internal/net.hpp"
 
 #include <locale>
@@ -35,7 +37,7 @@ inline bool is_hostname_char__(const char ch)
 
 } // namespace
 
-inline bool net::is_ip_address_valid(const std::string& address)
+DMITIGR_INLINE bool net::is_ip_address_valid(const std::string& address)
 {
   unsigned char buf[sizeof (::in6_addr)];
   for (const auto family : {AF_INET, AF_INET6}) {
@@ -50,7 +52,7 @@ inline bool net::is_ip_address_valid(const std::string& address)
   return false;
 }
 
-inline bool net::is_hostname_valid(const std::string& hostname)
+DMITIGR_INLINE bool net::is_hostname_valid(const std::string& hostname)
 {
   constexpr std::string::size_type max_length{253};
   if (hostname.empty() || hostname.size() > max_length)

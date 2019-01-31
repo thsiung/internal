@@ -1,7 +1,7 @@
 The library for internal use
 ============================
 
-dmitigr_internal - general purpose internal library of components, including
+`dmitigr_internal` - general purpose internal library of components, including
 programs, functions, classes - everything, which can be used in various projects.
 
 This library doesn't pretends to be used by anyone directly. The main goal of
@@ -11,22 +11,19 @@ own projects. Every bit can be changed without care of the backward compatibilit
 Installation and consuming
 ==========================
 
+Currently, header-only version of `dmitigr_internal` is good enough for all
+Dmitigr software dependent on `dmitigr_internal`. Thus, no build is required.
+
 Dependencies
 ------------
 
 - [CMake] build system version 3.13+;
-- C++17 compiler ([GCC] 7.3+ or [Microsoft Visual C++][Visual_Studio] 15.7+);
+- C++17 compiler ([GCC] 7.3+ or [Microsoft Visual C++][Visual_Studio] 15.7+).
 
 Build time settings
 -------------------
 
-By default, header-only mode is enabled. Thus, no build required.
-
-**Currently for all Dmitigr stuff which are dependent on `dmitigr_internal`,
-header-only version of `dmitigr_internal` is good enough. Thus, only installation
-step is required!**
-
-But if one wants, only static library can be build at the moment.
+But if one wants, the static library can be build at the moment.
 
 Settings that may be specified at build time by using [CMake] variables are:
   1. the type of the build;
@@ -51,11 +48,8 @@ Installation on Linux
     $ git clone https://github.com/dmitigr/internal.git
     $ mkdir -p internal/bld
     $ cd internal/bld
-    $ cmake -DCMAKE_BUILD_TYPE=Debug ..
-    $ make
-    $ sudo make install
-
-The value of the `CMAKE_BUILD_TYPE` could be replaced.
+    $ cmake ..
+    $ make install *may require administrator privileges*
 
 Installation on Microsoft Windows
 ---------------------------------
@@ -66,21 +60,12 @@ Run the Developer Command Prompt for Visual Studio and type:
     > mkdir internal\bld
     > cd internal\bld
     > cmake -G "Visual Studio 15 2017 Win64" ..
-    > cmake --build -DBUILD_TYPE=Debug ..
-
-Next, run the Elevated Command Prompt (i.e. the command prompt with administrator privileges) and type:
-
-    > cd internal\build
-    > cmake -DBUILD_TYPE=Debug -P cmake_install.cmake
-
-If the target architecture is Win32 or ARM, then "Win64" should be replaced by "Win32" or "ARM" accordingly.
-
-The value of the `BUILD_TYPE` could be replaced.
+    > cmake -P cmake_install.cmake *may require administrator privileges*
 
 Consuming
 ---------
 
-If you are using CMake the consuming of the dmitigr_internal library is quite simple. For example:
+If you are using CMake the consuming of the `dmitigr_internal` library is very simple:
 
 ```cmake
 cmake_minimum_required(VERSION 3.13)
@@ -93,7 +78,7 @@ target_link_libraries(foo dmitigr_internal)
 ```
 
 The above code snippet is minimal CMakeLists.txt that enough to build the
-application `foo` that depends on the dmitigr_internal library.
+application `foo` that depends on the `dmitigr_internal` library.
 
 License
 =======

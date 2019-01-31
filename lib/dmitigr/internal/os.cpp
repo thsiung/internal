@@ -2,6 +2,8 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
+#include "dmitigr/internal/header_only.hpp"
+
 #include "dmitigr/internal/debug.hpp"
 #include "dmitigr/internal/os.hpp"
 
@@ -73,13 +75,13 @@ inline char* dmint_os_cwd()
 
 } // namespace
 
-inline std::string os::cwd()
+DMITIGR_INLINE std::string os::cwd()
 {
   std::unique_ptr<char[], void (*)(void*)> guarded{dmint_os_cwd(), &std::free};
   return guarded ? guarded.get() : std::string{};
 }
 
-inline std::string os::current_username()
+DMITIGR_INLINE std::string os::current_username()
 {
   std::string result;
 #ifdef _WIN32
@@ -116,7 +118,7 @@ inline std::string os::current_username()
 
 // -----------------------------------------------------------------------------
 
-inline std::size_t io::seek(const int fd, long const offset, const Origin whence)
+DMITIGR_INLINE std::size_t io::seek(const int fd, long const offset, const Origin whence)
 {
 #ifdef _WIN32
   const auto result = ::_lseek(fd, offset, int(whence));
@@ -131,7 +133,7 @@ inline std::size_t io::seek(const int fd, long const offset, const Origin whence
     return std::size_t(result);
 }
 
-inline std::size_t io::read(const int fd, void* const buffer, const unsigned int count)
+DMITIGR_INLINE std::size_t io::read(const int fd, void* const buffer, const unsigned int count)
 {
   DMITIGR_INTERNAL_ASSERT(buffer);
 

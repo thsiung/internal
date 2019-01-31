@@ -2,6 +2,8 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
+#include "dmitigr/internal/header_only.hpp"
+
 #include "dmitigr/internal/graphicsmagick.hpp"
 
 #include <iostream>
@@ -11,12 +13,12 @@
 
 namespace gm = dmitigr::internal::img::graphicsmagick;
 
-inline void gm::init(const char* const app_path)
+DMITIGR_INLINE void gm::init(const char* const app_path)
 {
   ::Magick::InitializeMagick(app_path);
 }
 
-inline const char* gm::file_type_c_str(const File_type file_type)
+DMITIGR_INLINE const char* gm::file_type_c_str(const File_type file_type)
 {
   switch (file_type) {
   case File_type::gif:  { return "GIF"; }
@@ -25,7 +27,7 @@ inline const char* gm::file_type_c_str(const File_type file_type)
   }
 }
 
-inline void gm::resize(std::istream& input,
+DMITIGR_INLINE void gm::resize(std::istream& input,
   std::ostream& output,
   const unsigned int output_x,
   const unsigned int output_y,

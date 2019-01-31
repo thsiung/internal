@@ -2,6 +2,8 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
+#include "dmitigr/internal/header_only.hpp"
+
 #include "dmitigr/internal/config.hpp"
 #include "dmitigr/internal/debug.hpp"
 #include "dmitigr/internal/string.hpp"
@@ -12,13 +14,13 @@
 
 namespace dmitigr::internal::config {
 
-inline Flat::Flat(const std::filesystem::path& path)
+DMITIGR_INLINE Flat::Flat(const std::filesystem::path& path)
   : parameters_{parsed_config(path)}
 {
   DMITIGR_INTERNAL_ASSERT(is_invariant_ok());
 }
 
-inline const std::optional<std::string>& Flat::string_parameter(const std::string& name) const
+DMITIGR_INLINE const std::optional<std::string>& Flat::string_parameter(const std::string& name) const
 {
   if (const auto e = cend(parameters_), i = parameters_.find(name); i != e)
     return i->second;
@@ -26,7 +28,7 @@ inline const std::optional<std::string>& Flat::string_parameter(const std::strin
     return null_string_parameter();
 }
 
-inline std::optional<bool> Flat::boolean_parameter(const std::string& name) const
+DMITIGR_INLINE std::optional<bool> Flat::boolean_parameter(const std::string& name) const
 {
   if (const auto& str_param = string_parameter(name)) {
     const auto& str = *str_param;
@@ -40,12 +42,12 @@ inline std::optional<bool> Flat::boolean_parameter(const std::string& name) cons
     return std::nullopt;
 }
 
-inline const std::map<std::string, std::optional<std::string>>& Flat::parameters() const
+DMITIGR_INLINE const std::map<std::string, std::optional<std::string>>& Flat::parameters() const
 {
   return parameters_;
 }
 
-inline std::pair<std::string, std::string> Flat::parsed_config_entry(const std::string& line)
+DMITIGR_INLINE std::pair<std::string, std::string> Flat::parsed_config_entry(const std::string& line)
 {
   std::string param;
   std::string value;
@@ -90,7 +92,7 @@ inline std::pair<std::string, std::string> Flat::parsed_config_entry(const std::
   return {std::move(param), std::move(value)};
 }
 
-inline std::map<std::string, std::optional<std::string>> Flat::parsed_config(const std::filesystem::path& path)
+DMITIGR_INLINE std::map<std::string, std::optional<std::string>> Flat::parsed_config(const std::filesystem::path& path)
 {
   std::map<std::string, std::optional<std::string>> result;
   static const auto is_nor_empty_nor_commented = [](const std::string& line)
@@ -111,12 +113,12 @@ inline std::map<std::string, std::optional<std::string>> Flat::parsed_config(con
   return result;
 }
 
-inline bool Flat::is_invariant_ok() const
+DMITIGR_INLINE bool Flat::is_invariant_ok() const
 {
   return true;
 }
 
-inline const std::optional<std::string>& Flat::null_string_parameter()
+DMITIGR_INLINE const std::optional<std::string>& Flat::null_string_parameter()
 {
   static const std::optional<std::string> result;
   return result;
