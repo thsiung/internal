@@ -22,7 +22,7 @@ Build time settings
 
 By default, header-only mode is enabled. Thus, no build required.
 
-** Currently for all dmitigr_* stuff  which are dependent on `dmitigr_internal`,
+**Currently for all dmitigr_* stuff  which are dependent on `dmitigr_internal`,
 header-only version of `dmitigr_internal` is good enough. Thus, only installation
 step is required.**
 
