@@ -20,7 +20,13 @@ Dependencies
 Build time settings
 -------------------
 
-Only static library can be build at the moment.
+By default, header-only mode is enabled. Thus, no build required.
+
+** Currently for all dmitigr_* stuff  which are dependent on `dmitigr_internal`,
+header-only version of `dmitigr_internal` is good enough. Thus, only installation
+step is required.**
+
+But if one wants, only static library can be build at the moment.
 
 Settings that may be specified at build time by using [CMake] variables are:
   1. the type of the build;
