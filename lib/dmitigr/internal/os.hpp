@@ -5,6 +5,8 @@
 #ifndef DMITIGR_INTERNAL_OS_HPP
 #define DMITIGR_INTERNAL_OS_HPP
 
+#include "dmitigr/internal/dll.hpp"
+
 #include <cstddef>
 #include <string>
 
@@ -15,14 +17,14 @@ namespace dmitigr::internal::os {
  *
  * @returns The current working directory.
  */
-std::string cwd();
+DMITIGR_INTERNAL_API std::string current_working_directory();
 
 /**
  * @internal
  *
  * @returns The string with the current username.
  */
-std::string current_username();
+DMITIGR_INTERNAL_API std::string current_username();
 
 // -----------------------------------------------------------------------------
 
@@ -38,9 +40,9 @@ enum Origin {
 #endif
 };
 
-std::size_t seek(int fd, long offset, Origin whence);
+DMITIGR_INTERNAL_API std::size_t seek(int fd, long offset, Origin whence);
 
-std::size_t read(int fd, void* buffer, unsigned int count);
+DMITIGR_INTERNAL_API std::size_t read(int fd, void* buffer, unsigned int count);
 
 } // namespace io
 

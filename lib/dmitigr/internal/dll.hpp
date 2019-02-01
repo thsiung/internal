@@ -15,7 +15,7 @@
   #else
     #if DMITIGR_INTERNAL_DLL
       #define DMITIGR_INTERNAL_API __declspec(dllimport)
-    #else /* static library on Windows */
+    #else /* static or header-only library on Windows */
       #define DMITIGR_INTERNAL_API
     #endif
   #endif

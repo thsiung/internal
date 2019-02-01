@@ -75,7 +75,7 @@ inline char* dmint_os_cwd()
 
 } // namespace
 
-DMITIGR_INLINE std::string os::cwd()
+DMITIGR_INLINE std::string os::current_working_directory()
 {
   std::unique_ptr<char[], void (*)(void*)> guarded{dmint_os_cwd(), &std::free};
   return guarded ? guarded.get() : std::string{};

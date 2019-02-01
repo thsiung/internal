@@ -5,6 +5,8 @@
 #ifndef DMITIGR_INTERNAL_STREAM_HPP
 #define DMITIGR_INTERNAL_STREAM_HPP
 
+#include "dmitigr/internal/dll.hpp"
+
 #include <iosfwd>
 #include <string>
 #include <system_error>
@@ -17,13 +19,13 @@ namespace dmitigr::internal::stream {
  */
 class Read_exception : public std::system_error {
 public:
-  explicit Read_exception(std::error_condition condition);
+  DMITIGR_INTERNAL_API explicit Read_exception(std::error_condition condition);
 
-  Read_exception(std::error_condition condition, std::string&& incomplete_result);
+  DMITIGR_INTERNAL_API Read_exception(std::error_condition condition, std::string&& incomplete_result);
 
-  const std::string& incomplete_result() const;
+  DMITIGR_INTERNAL_API const std::string& incomplete_result() const;
 
-  const char* what() const noexcept override;
+  DMITIGR_INTERNAL_API const char* what() const noexcept override;
 
 private:
   std::string incomplete_result_;
@@ -44,9 +46,9 @@ enum class Read_errc { success = 0, stream_error, invalid_input };
  */
 class Error_category : public std::error_category {
 public:
-  const char* name() const noexcept override;
+  DMITIGR_INTERNAL_API const char* name() const noexcept override;
 
-  std::string message(const int ev) const override;
+  DMITIGR_INTERNAL_API std::string message(const int ev) const override;
 };
 
 /**
@@ -56,21 +58,21 @@ public:
  *
  * @remarks The object's name() function returns a pointer to the string "dmitigr_internal_stream_error".
  */
-const Error_category& error_category() noexcept;
+DMITIGR_INTERNAL_API const Error_category& error_category() noexcept;
 
 /**
  * @internal
  *
  * @returns `std::error_code(int(errc), parse_error_category())`
  */
-std::error_code make_error_code(Read_errc errc) noexcept;
+DMITIGR_INTERNAL_API std::error_code make_error_code(Read_errc errc) noexcept;
 
 /**
  * @internal
  *
  * @returns `std::error_condition(int(errc), parse_error_category())`
  */
-std::error_condition make_error_condition(Read_errc errc) noexcept;
+DMITIGR_INTERNAL_API std::error_condition make_error_condition(Read_errc errc) noexcept;
 
 } // namespace dmitigr::internal::stream
 
@@ -90,7 +92,7 @@ namespace dmitigr::internal::stream {
  *
  * @returns The string with the content read from the stream.
  */
-std::string read_to_string(std::istream& input);
+DMITIGR_INTERNAL_API std::string read_to_string(std::istream& input);
 
 /**
  * @internal
@@ -108,7 +110,7 @@ std::string read_to_string(std::istream& input);
  * @remarks the "simple phrase" - an unquoted expression without spaces, or
  * quoted expression (which can include any characters).
  */
-std::string read_simple_phrase_to_string(std::istream& input);
+DMITIGR_INTERNAL_API std::string read_simple_phrase_to_string(std::istream& input);
 
 } // namespace dmitigr::internal::stream
 

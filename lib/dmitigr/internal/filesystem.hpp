@@ -5,6 +5,7 @@
 #ifndef DMITIGR_INTERNAL_FILESYSTEM_HPP
 #define DMITIGR_INTERNAL_FILESYSTEM_HPP
 
+#include "dmitigr/internal/dll.hpp"
 #include "dmitigr/internal/filesystem_experimental.hpp"
 
 #include <fstream>
@@ -25,7 +26,7 @@ namespace dmitigr::internal::filesystem {
  * The "heading file" - is a regular file with the given `extension` which has the same
  * parent directory as the `root`.
  */
-std::vector<std::filesystem::path> files_by_extension(const std::filesystem::path& root,
+DMITIGR_INTERNAL_API std::vector<std::filesystem::path> files_by_extension(const std::filesystem::path& root,
   const std::filesystem::path& extension, bool recursive, bool include_heading = false);
 
 // -----------------------------------------------------------------------------
@@ -53,7 +54,7 @@ std::vector<std::string> read_lines_to_vector_if(const std::filesystem::path& pa
  *
  * @brief Similar to read_lines_to_vector_if(path, always_true).
  */
-std::vector<std::string> read_lines_to_vector(const std::filesystem::path& path);
+DMITIGR_INTERNAL_API std::vector<std::string> read_lines_to_vector(const std::filesystem::path& path);
 
 // -----------------------------------------------------------------------------
 
@@ -64,7 +65,7 @@ std::vector<std::string> read_lines_to_vector(const std::filesystem::path& path)
  *
  * @returns The string with the content read from the file denoted by the given `path`.
  */
-std::string read_to_string(const std::filesystem::path& path);
+DMITIGR_INTERNAL_API std::string read_to_string(const std::filesystem::path& path);
 
 // -----------------------------------------------------------------------------
 
@@ -75,7 +76,7 @@ std::string read_to_string(const std::filesystem::path& path);
  *
  * @returns The path to the `indicator` directory.
  */
-std::filesystem::path relative_root_path(const std::filesystem::path& indicator);
+DMITIGR_INTERNAL_API std::filesystem::path relative_root_path(const std::filesystem::path& indicator);
 
 } // namespace dmitigr::internal::filesystem
 

@@ -5,6 +5,8 @@
 #ifndef DMITIGR_INTERNAL_NET_HPP
 #define DMITIGR_INTERNAL_NET_HPP
 
+#include "dmitigr/internal/dll.hpp"
+
 #include <string>
 
 namespace dmitigr::internal::net {
@@ -15,7 +17,7 @@ namespace dmitigr::internal::net {
  * @returns `true` if the `address` denotes a valid IPv4 or IPv6 address, or
  * `false` otherwise.
  */
-bool is_ip_address_valid(const std::string& address);
+DMITIGR_INTERNAL_API bool is_ip_address_valid(const std::string& address);
 
 /**
  * @internal
@@ -23,7 +25,7 @@ bool is_ip_address_valid(const std::string& address);
  * @returns `true` if the `hostname` denotes a valid hostname, or
  * `false` otherwise.
  */
-bool is_hostname_valid(const std::string& hostname);
+DMITIGR_INTERNAL_API bool is_hostname_valid(const std::string& hostname);
 
 } // namespace dmitigr::internal::net
 

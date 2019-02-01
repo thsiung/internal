@@ -24,8 +24,6 @@ option(DMITIGR_INTERNAL_HEADER_ONLY "Header-only library?" ON)
 option(DMITIGR_INTERNAL_LIBRARIAN_DEBUG "Print librarian.cmake debug output?" OFF)
 
 if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
-  set(BUILD_SHARED_LIBS OFF)
-
   if(BUILD_SHARED_LIBS)
     message("Building shared library is enabled.")
     add_definitions(-DDMITIGR_INTERNAL_DLL_BUILDING)

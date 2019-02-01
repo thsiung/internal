@@ -5,6 +5,7 @@
 #ifndef DMITIGR_INTERNAL_CONFIG_HPP
 #define DMITIGR_INTERNAL_CONFIG_HPP
 
+#include "dmitigr/internal/dll.hpp"
 #include "dmitigr/internal/filesystem.hpp"
 
 #include <map>
@@ -19,13 +20,13 @@ namespace dmitigr::internal::config {
  */
 class Flat {
 public:
-  explicit Flat(const std::filesystem::path& path);
+  DMITIGR_INTERNAL_API explicit Flat(const std::filesystem::path& path);
 
-  const std::optional<std::string>& string_parameter(const std::string& name) const;
+  DMITIGR_INTERNAL_API const std::optional<std::string>& string_parameter(const std::string& name) const;
 
-  std::optional<bool> boolean_parameter(const std::string& name) const;
+  DMITIGR_INTERNAL_API std::optional<bool> boolean_parameter(const std::string& name) const;
 
-  const std::map<std::string, std::optional<std::string>>& parameters() const;
+  DMITIGR_INTERNAL_API const std::map<std::string, std::optional<std::string>>& parameters() const;
 
 private:
   /**

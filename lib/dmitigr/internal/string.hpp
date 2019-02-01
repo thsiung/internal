@@ -6,6 +6,7 @@
 #define DMITIGR_INTERNAL_STRING_HPP
 
 #include "dmitigr/internal/debug.hpp"
+#include "dmitigr/internal/dll.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -26,7 +27,7 @@ namespace dmitigr::internal::string {
  * @returns The pointer to the next non-space character, or pointer to the
  * terminating zero character.
  */
-const char* next_non_space_pointer(const char* p) noexcept;
+DMITIGR_INTERNAL_API const char* next_non_space_pointer(const char* p) noexcept;
 
 /**
  * @internal
@@ -44,7 +45,7 @@ inline const char* literal(const char* const literal) noexcept
  * @returns First non-null string literal of specified literals, or
  * `nullptr` if there is no such a literal.
  */
-const char* coalesce(std::initializer_list<const char*> literals) noexcept;
+DMITIGR_INTERNAL_API const char* coalesce(std::initializer_list<const char*> literals) noexcept;
 
 // -----------------------------------------------------------------------------
 // Text lines manipulations
@@ -54,13 +55,14 @@ const char* coalesce(std::initializer_list<const char*> literals) noexcept;
  *
  * @returns Line number by the given absolute position. (Line numbers starts at 1.)
  */
-std::size_t line_number_by_position(const std::string& str, const std::size_t pos);
+DMITIGR_INTERNAL_API std::size_t line_number_by_position(const std::string& str, const std::size_t pos);
 
 /**
  * @internal
  *
  * @returns Line and column numbers by the given absolute position. (Both numbers starts at 1.)
  */
+DMITIGR_INTERNAL_API
 std::pair<std::size_t, std::size_t> line_column_numbers_by_position(const std::string& str, const std::size_t pos);
 
 // -----------------------------------------------------------------------------
@@ -124,7 +126,7 @@ inline bool has_space(const std::string& str)
  *
  * @returns A random string of specified size from chars of palette.
  */
-std::string random_string(const std::string& palette, std::string::size_type size);
+DMITIGR_INTERNAL_API std::string random_string(const std::string& palette, std::string::size_type size);
 
 /**
  * @internal
@@ -134,7 +136,7 @@ std::string random_string(const std::string& palette, std::string::size_type siz
  * @par Requires
  * `(beg < end)`
  */
-std::string random_string(char beg, char end, std::string::size_type size);
+DMITIGR_INTERNAL_API std::string random_string(char beg, char end, std::string::size_type size);
 
 // -----------------------------------------------------------------------------
 // Transformators
@@ -144,7 +146,7 @@ std::string random_string(char beg, char end, std::string::size_type size);
  *
  * @returns "i_n_p_u_t", where the "_" is the value of the `separator`.
  */
-std::string sparsed_string(const std::string& input, const std::string& separator);
+DMITIGR_INTERNAL_API std::string sparsed_string(const std::string& input, const std::string& separator);
 
 /**
  * @internal
@@ -152,21 +154,21 @@ std::string sparsed_string(const std::string& input, const std::string& separato
  * @par Effects
  * `(str.back() == c)`
  */
-void terminate_string(std::string& str, char c);
+DMITIGR_INTERNAL_API void terminate_string(std::string& str, char c);
 
 /**
  * @internal
  *
  * Replaces all uppercase characters in `str` by the corresponding lowercase characters.
  */
-void lowercase(std::string& str);
+DMITIGR_INTERNAL_API void lowercase(std::string& str);
 
 /**
  * @internal
  *
  * Replaces all lowercase characters in `str` by the corresponding uppercase characters.
  */
-void uppercase(std::string& str);
+DMITIGR_INTERNAL_API void uppercase(std::string& str);
 
 // -----------------------------------------------------------------------------
 // Substrings
@@ -174,7 +176,7 @@ void uppercase(std::string& str);
 /**
  * @returns The position of the first non-space character of `str` in range [pos, str.size()).
  */
-std::string::size_type position_of_non_space(const std::string& str, std::string::size_type pos);
+DMITIGR_INTERNAL_API std::string::size_type position_of_non_space(const std::string& str, std::string::size_type pos);
 
 /**
  * @returns The substring of `str` from position of `pos` until the position
@@ -201,21 +203,22 @@ std::pair<std::string, std::string::size_type> substring_if(const std::string& s
  * @returns The substring of `str` with the "simple identifier" from position of `pos`
  * as the first element, and the position of the next character in `str`.
  */
-std::pair<std::string, std::string::size_type>
-substring_if_simple_identifier(const std::string& str, std::string::size_type pos);
+DMITIGR_INTERNAL_API
+std::pair<std::string, std::string::size_type> substring_if_simple_identifier(const std::string& str, std::string::size_type pos);
 
 /**
  * @returns The substring of `str` with no spaces from position of `pos`
  * as the first element, and the position of the next character in `str`.
  */
-std::pair<std::string, std::string::size_type>
-substring_if_no_spaces(const std::string& str, std::string::size_type pos);
+DMITIGR_INTERNAL_API
+std::pair<std::string, std::string::size_type> substring_if_no_spaces(const std::string& str, std::string::size_type pos);
 
 /**
  * @returns The unquoted substring of `str` if `str[pos] == '\''` or the substring
  * with no spaces from the position of `pos` as the first element, and the position
  * of the next character in `str`.
  */
+DMITIGR_INTERNAL_API
 std::pair<std::string, std::string::size_type> unquoted_substring(const std::string& str, std::string::size_type pos);
 
 // -----------------------------------------------------------------------------

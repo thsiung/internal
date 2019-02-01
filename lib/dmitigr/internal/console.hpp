@@ -5,6 +5,8 @@
 #ifndef DMITIGR_INTERNAL_CONSOLE_HPP
 #define DMITIGR_INTERNAL_CONSOLE_HPP
 
+#include "dmitigr/internal/dll.hpp"
+
 #include <functional>
 #include <optional>
 #include <string>
@@ -47,7 +49,7 @@ protected:
    *
    * @param details - The details to be included into the error message.
    */
-  [[noreturn]] void throw_invalid_usage(std::string details = {}) const;
+  [[noreturn]] DMITIGR_INTERNAL_API void throw_invalid_usage(std::string details = {}) const;
 
   /**
    * @returns The argument that follows the option.
@@ -55,9 +57,9 @@ protected:
    * @param value - The value the option.
    * @param is_optional - The indicator of an optional option argument.
    */
-  std::optional<std::string> option_argument(const std::string& value, const bool is_optional = false) const;
+  DMITIGR_INTERNAL_API std::optional<std::string> option_argument(const std::string& value, const bool is_optional = false) const;
 
-  void check_no_option_argument(const std::string& value) const;
+  DMITIGR_INTERNAL_API void check_no_option_argument(const std::string& value) const;
 
   /**
    * @brief Parses the options.
@@ -67,7 +69,7 @@ protected:
    * @param parse_option - The callback that will be called for each option.
    * The parser must accepts one argument: the string of the option to parse.
    */
-  Option_iterator parse_options(Option_iterator i, const Option_iterator e, Option_parser parse_option);
+  DMITIGR_INTERNAL_API Option_iterator parse_options(Option_iterator i, const Option_iterator e, Option_parser parse_option);
 };
 
 /**
@@ -77,7 +79,7 @@ protected:
  * For example, the "exec" is the command ID here:
  *   pgspa exec --strong foo bar baz
  */
-std::pair<std::string, std::vector<std::string>> command_and_options(const int argc, const char* const* argv);
+DMITIGR_INTERNAL_API std::pair<std::string, std::vector<std::string>> command_and_options(const int argc, const char* const* argv);
 
 } // namespace dmitigr::internal::console
 

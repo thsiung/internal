@@ -5,6 +5,8 @@
 #ifndef DMITIGR_INTERNAL_GRAPHICSMAGICK_HPP
 #define DMITIGR_INTERNAL_GRAPHICSMAGICK_HPP
 
+#include "dmitigr/internal/dll.hpp"
+
 #include <iosfwd>
 
 namespace dmitigr::internal::img::graphicsmagick {
@@ -16,21 +18,21 @@ enum class File_type { gif = 1, jpeg, png };
  *
  * @brief GraphicsMagick initialization.
  */
-void init(const char* app_path);
+DMITIGR_INTERNAL_API void init(const char* app_path);
 
 /**
  * @internal
  *
  * @returns MIME in the GraphicsMagick notation.
  */
-const char* file_type_c_str(File_type file_type);
+DMITIGR_INTERNAL_API const char* file_type_c_str(File_type file_type);
 
 /**
  * @internal
  *
  * @brief Resizes the image read from `input` and writes the result to `output`.
  */
-void resize(std::istream& input,
+DMITIGR_INTERNAL_API void resize(std::istream& input,
   std::ostream& output,
   unsigned int output_x,
   unsigned int output_y,
