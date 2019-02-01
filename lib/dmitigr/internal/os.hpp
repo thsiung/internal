@@ -8,6 +8,7 @@
 #include "dmitigr/internal/dll.hpp"
 
 #include <cstddef>
+#include <optional>
 #include <string>
 
 namespace dmitigr::internal::os {
@@ -25,6 +26,16 @@ DMITIGR_INTERNAL_API std::string current_working_directory();
  * @returns The string with the current username.
  */
 DMITIGR_INTERNAL_API std::string current_username();
+
+/**
+ * @internal
+ *
+ * @returns The value of the environment variable `name`, or std::nullopt if there is no match.
+ *
+ * @remarks Cannot be used in applications that execute in the Windows Runtime, because
+ * environment variables are not available to UWP applications.
+ */
+DMITIGR_INTERNAL_API std::optional<std::string> environment_variable(const std::string& name);
 
 // -----------------------------------------------------------------------------
 
