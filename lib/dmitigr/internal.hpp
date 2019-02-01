@@ -30,7 +30,9 @@
 #include "dmitigr/internal/debug.hpp"
 #include "dmitigr/internal/filesystem_experimental.hpp"
 #include "dmitigr/internal/filesystem.hpp"
+#ifdef DMITIGR_INTERNAL_GRAPHICSMAGICK
 #include "dmitigr/internal/graphicsmagick.hpp"
+#endif
 #include "dmitigr/internal/macros.hpp"
 #include "dmitigr/internal/math.hpp"
 #include "dmitigr/internal/memory.hpp"

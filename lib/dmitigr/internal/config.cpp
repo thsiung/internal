@@ -60,15 +60,10 @@ DMITIGR_INLINE std::pair<std::string, std::string> Flat::parsed_config_entry(con
   static const auto position_of_value = [](const std::string& str, std::string::size_type pos)
   {
     pos = string::position_of_non_space(str, pos);
-    if (pos < str.size()) {
-      if (str[pos] == '=')
-        return string::position_of_non_space(str, ++pos);
-      else
-        throw std::runtime_error{"no value assignment"};
-    } else
+    if (pos < str.size() && str[pos] == '=')
+      return string::position_of_non_space(str, ++pos);
+    else
       throw std::runtime_error{"no value assignment"};
-
-    return pos;
   };
 
   // Reading the parameter name.
