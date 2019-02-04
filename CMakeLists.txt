@@ -198,7 +198,7 @@ if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
   elseif (WIN32)
     target_link_libraries(${dmitigr_internal_target} Ws2_32.lib)
   endif()
-else()
+else() # for header-only
   set(dmitigr_internal_target "dmitigr_internal_interface")
 
   add_library(dmitigr_internal_interface INTERFACE)
@@ -228,7 +228,7 @@ if (GraphicsMagick_FOUND)
   if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
     target_link_libraries(${dmitigr_internal_target} ${Suggested_GraphicsMagick_LIBRARIES})
   else()
-    target_link_libraries(${dmitigr_internal_target} INTERFACE ${Suggested_GraphicsMagick_LIBRARIES})
+    target_link_libraries(dmitigr_internal_interface INTERFACE ${Suggested_GraphicsMagick_LIBRARIES})
   endif()
   target_compile_definitions(${dmitigr_internal_target} PUBLIC -DDMITIGR_INTERNAL_GRAPHICSMAGICK)
 endif()
@@ -259,8 +259,8 @@ if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
     RUNTIME  DESTINATION ${DMITIGR_INTERNAL_LIB_INSTALL_DIR}
     INCLUDES DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR})
 else()
-  install(TARGETS ${dmitigr_internal_target}
-    EXPORT ${dmitigr_internal_target}_export
+  install(TARGETS dmitigr_internal_interface
+    EXPORT dmitigr_internal_interface_export
     INCLUDES DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR})
 
   install(FILES ${dmitigr_internal_transunits}
