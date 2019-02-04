@@ -109,6 +109,7 @@ set(dmitigr_internal_headers
   lib/dmitigr/internal/config.hpp
   lib/dmitigr/internal/console.hpp
   lib/dmitigr/internal/debug.hpp
+  lib/dmitigr/internal/dll.hpp
   lib/dmitigr/internal/filesystem_experimental.hpp
   lib/dmitigr/internal/filesystem.hpp
   lib/dmitigr/internal/header_only.hpp
@@ -130,10 +131,6 @@ set(dmitigr_internal_transunits
   lib/dmitigr/internal/stream.cpp
   lib/dmitigr/internal/string.cpp
 )
-
-if(BUILD_SHARED_LIBS)
-  list(APPEND dmitigr_internal_headers "${CMAKE_CURRENT_SOURCE_DIR}/lib/dmitigr/internal/dll.hpp")
-endif()
 
 # ------------------------------------------------------------------------------
 # Targets
