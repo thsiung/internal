@@ -18,12 +18,13 @@ Dependencies
 ------------
 
 - [CMake] build system version 3.13+;
-- C++17 compiler ([GCC] 7.3+ or [Microsoft Visual C++][Visual_Studio] 15.7+).
+- Optional, C++17 compiler ([GCC] 7.3+ or [Microsoft Visual C++][Visual_Studio] 15.7+).
 
 Build time settings
 -------------------
 
-But if one wants, the static library can be build at the moment.
+As stated above, usually no build is required. But if one wants, both shared and
+static library can be build.
 
 Settings that may be specified at build time by using [CMake] variables are:
   1. the type of the build;
@@ -50,7 +51,7 @@ Installation on Linux
     $ mkdir -p internal/build
     $ cd internal/build
     $ cmake ..
-    $ make install *may require administrator privileges*
+    $ make install
 
 Installation on Microsoft Windows
 ---------------------------------
@@ -61,7 +62,7 @@ Run the Developer Command Prompt for Visual Studio and type:
     > mkdir internal\build
     > cd internal\build
     > cmake -G "Visual Studio 15 2017 Win64" ..
-    > cmake -P cmake_install.cmake *may require administrator privileges*
+    > cmake -P cmake_install.cmake
 
 Consuming
 ---------
@@ -71,7 +72,7 @@ If you are using CMake the consuming of the `dmitigr_internal` library is very s
 ```cmake
 cmake_minimum_required(VERSION 3.13)
 project(foo)
-find_package(dmitigr_internal REQUIRED)
+find_package(dmitigr_internal REQUIRED CONFIGS dmitigr_internal_interface-config.cmake)
 set(CMAKE_CXX_STANDARD 17)
 set(CXX_STANDARD_REQUIRED ON)
 add_executable(foo foo.cpp)
@@ -79,7 +80,7 @@ target_link_libraries(foo dmitigr_internal)
 ```
 
 The above code snippet is minimal CMakeLists.txt that enough to build the
-application `foo` that depends on the `dmitigr_internal` library.
+application `foo` that depends on the `dmitigr_internal` header-only library.
 
 License
 =======
