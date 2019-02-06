@@ -11,6 +11,9 @@ if (NOT (UNIX OR WIN32))
   message(FATAL_ERROR "unsupported target platform")
 endif()
 
+list(APPEND CMAKE_MODULE_PATH ${dmitigr_internal_SOURCE_DIR}/cmake)
+include(dmitigr)
+
 set(dmitigr_internal_version_part1 0)
 set(dmitigr_internal_version_part2 1)
 add_definitions(-DDMITIGR_INTERNAL_VERSION_PART1=${dmitigr_internal_version_part1})
@@ -38,7 +41,6 @@ if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
   message("Build type is ${CMAKE_BUILD_TYPE}")
 else()
   message("Header-only mode is enabled")
-  add_definitions(-DDMITIGR_INTERNAL_HEADER_ONLY)
 endif()
 
 if(DMITIGR_INTERNAL_LIBRARIAN_DEBUG)
@@ -133,6 +135,25 @@ set(dmitigr_internal_transunits
 )
 
 # ------------------------------------------------------------------------------
+# Dependencies
+# ------------------------------------------------------------------------------
+
+# GraphicsMagick
+find_package(GraphicsMagick)
+if (GraphicsMagick_FOUND)
+  message("Found GraphicsMagick++ headers at: ${GraphicsMagick_INCLUDE_DIRS}")
+  list(APPEND dmitigr_internal_headers graphicsmagick.hpp)
+  list(APPEND dmitigr_internal_transunits graphicsmagick.cpp)
+  include_directories(${GraphicsMagick_INCLUDE_DIRS})
+  if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
+    target_link_libraries(${dmitigr_internal_target} ${Suggested_GraphicsMagick_LIBRARIES})
+  else()
+    target_link_libraries(dmitigr_internal_interface INTERFACE ${Suggested_GraphicsMagick_LIBRARIES})
+  endif()
+  target_compile_definitions(${dmitigr_internal_target} PUBLIC -DDMITIGR_INTERNAL_GRAPHICSMAGICK)
+endif()
+
+# ------------------------------------------------------------------------------
 # Targets
 # ------------------------------------------------------------------------------
 
@@ -161,34 +182,7 @@ if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
     VERSION ${dmitigr_internal_version_part1}.${dmitigr_internal_version_part2}
     DEBUG_POSTFIX "d")
 
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    # FIXME: GDB 7.7 doesn't print info of rvalues' that are function arguments
-    # properly when compiled with -gdwarf-4. So, using -gdwarf-3 instead.
-    target_compile_options(${dmitigr_internal_target} PRIVATE
-      -gdwarf-3
-      -pedantic
-      -Wall
-      -Wextra
-      -Winline
-      -Winit-self
-      -Wuninitialized
-      -Wmaybe-uninitialized
-      -Woverloaded-virtual
-      -Wsuggest-override
-      -Wlogical-op
-      -Wswitch)
-  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(${dmitigr_internal_target} PRIVATE
-      -pedantic
-      -Weverything)
-  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(${dmitigr_internal_target} PRIVATE
-      /W4
-      /Zc:throwingNew,referenceBinding,noexceptTypes
-      /errorReport:none
-      /nologo
-      /utf-8)
-  endif()
+  dmitigr_target_compile_options(${dmitigr_internal_target})
 
   if (UNIX)
     target_link_libraries(${dmitigr_internal_target} stdc++fs)
@@ -207,27 +201,6 @@ else() # for header-only
   elseif (WIN32)
     target_link_libraries(dmitigr_internal_interface INTERFACE Ws2_32.lib)
   endif()
-endif()
-
-# ------------------------------------------------------------------------------
-# Dependencies
-# ------------------------------------------------------------------------------
-
-list(APPEND CMAKE_MODULE_PATH ${dmitigr_internal_SOURCE_DIR}/cmake)
-
-# GraphicsMagick
-find_package(GraphicsMagick)
-if (GraphicsMagick_FOUND)
-  message("Found GraphicsMagick++ headers at: ${GraphicsMagick_INCLUDE_DIRS}")
-  list(APPEND dmitigr_internal_headers graphicsmagick.hpp)
-  list(APPEND dmitigr_internal_transunits graphicsmagick.cpp)
-  include_directories(${GraphicsMagick_INCLUDE_DIRS})
-  if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
-    target_link_libraries(${dmitigr_internal_target} ${Suggested_GraphicsMagick_LIBRARIES})
-  else()
-    target_link_libraries(dmitigr_internal_interface INTERFACE ${Suggested_GraphicsMagick_LIBRARIES})
-  endif()
-  target_compile_definitions(${dmitigr_internal_target} PUBLIC -DDMITIGR_INTERNAL_GRAPHICSMAGICK)
 endif()
 
 # ------------------------------------------------------------------------------
