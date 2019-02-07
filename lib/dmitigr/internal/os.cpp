@@ -134,15 +134,13 @@ DMITIGR_INLINE std::optional<std::string> os::environment_variable(const std::st
 #ifdef _WIN32
   const std::unique_ptr<char, void(*)(void*)> buffer{nullptr, &std::free};
   char* result = buffer.get();
-  std::size_t result_size;
-  const auto err = _dupenv_s(&result, &result_size, name.c_str());
+  const auto err = _dupenv_s(&result, nullptr, name.c_str());
   if (err)
     throw std::system_error{err, std::system_category(), "dmitigr::internal::os::environment_variable()"};
-  return result ? std::make_optional(std::string{result, result_size}) : std::nullopt;
 #else
   const char* const result = std::getenv(name.c_str());
-  return result ? std::make_optional(std::string{result}) : std::nullopt;
 #endif
+  return result ? std::make_optional(std::string{result}) : std::nullopt;
 }
 
 // -----------------------------------------------------------------------------
