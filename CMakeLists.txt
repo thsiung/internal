@@ -215,7 +215,7 @@ install(FILES bin/dmitigr_internal_basics.sh
 
 # --------------------------------------
 
-install(FILES lib/dmitigr/internal.hpp
+install(FILES ${dmitigr_internal_root_headers}
   DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR}/dmitigr)
 
 install(FILES ${dmitigr_internal_headers}
