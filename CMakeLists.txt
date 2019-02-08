@@ -229,13 +229,13 @@ install(FILES bin/dmitigr_internal_basics.sh
 install(FILES ${dmitigr_internal_root_headers}
   DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR}/dmitigr)
 
-install(FILES ${dmitigr_internal_headers}
-  DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR}/dmitigr/internal)
-
 if(DMITIGR_INTERNAL_HEADER_ONLY)
   install(FILES ${dmitigr_internal_header_only_headers}
     DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR}/dmitigr/internal)
 endif()
+
+install(FILES ${dmitigr_internal_headers}
+  DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR}/dmitigr/internal)
 
 if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
   install(TARGETS ${dmitigr_internal_target}
