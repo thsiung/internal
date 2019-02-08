@@ -34,9 +34,9 @@ if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
     message("Building shared library is disabled.")
   endif()
 
-  if(NOT CMAKE_BUILD_TYPE)
+  if(NOT DEFINED CMAKE_BUILD_TYPE OR NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING
-      "Build type: Debug Release RelWithDebInfo MinSizeRel.")
+      "Build type: Debug Release RelWithDebInfo MinSizeRel." FORCE)
   endif()
   message("Build type is ${CMAKE_BUILD_TYPE}")
 else()
