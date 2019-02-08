@@ -23,15 +23,16 @@ add_definitions(-DDMITIGR_INTERNAL_VERSION_PART2=${dmitigr_internal_version_part
 # Build options
 # ------------------------------------------------------------------------------
 
+option(BUILD_SHARED_LIBS "Build shared library?" OFF)
 option(DMITIGR_INTERNAL_HEADER_ONLY "Header-only library?" ON)
 option(DMITIGR_INTERNAL_LIBRARIAN_DEBUG "Print librarian.cmake debug output?" OFF)
 
 if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
   if(BUILD_SHARED_LIBS)
-    message("Building shared library is enabled.")
+    message("Building of shared library is enabled.")
     add_definitions(-DDMITIGR_INTERNAL_DLL_BUILDING)
   else()
-    message("Building shared library is disabled.")
+    message("Building of static library is enabled.")
   endif()
 
   if(NOT DEFINED CMAKE_BUILD_TYPE OR NOT CMAKE_BUILD_TYPE)
@@ -45,12 +46,12 @@ endif()
 
 if(DMITIGR_INTERNAL_LIBRARIAN_DEBUG)
   message("")
-  message("Starting the debug output of testing librarian.cmake:")
+  message("Starting the debug output of librarian.cmake:")
   foreach(lib "GraphicsMagick" "Pq")
     find_package(${lib})
     include(librarian_debug)
   endforeach()
-  message("Ending the debug output of testing librarian.cmake.")
+  message("Ending the debug output of librarian.cmake.")
   message("")
 endif()
 
@@ -105,6 +106,10 @@ set(dmitigr_internal_root_headers
   lib/dmitigr/internal.hpp
   )
 
+set(dmitigr_internal_header_only_headers
+  lib/dmitigr/internal/header_only.hpp
+  )
+
 set(dmitigr_internal_headers
   lib/dmitigr/internal/algorithm.hpp
   lib/dmitigr/internal/basics.hpp
@@ -114,7 +119,6 @@ set(dmitigr_internal_headers
   lib/dmitigr/internal/dll.hpp
   lib/dmitigr/internal/filesystem_experimental.hpp
   lib/dmitigr/internal/filesystem.hpp
-  lib/dmitigr/internal/header_only.hpp
   lib/dmitigr/internal/macros.hpp
   lib/dmitigr/internal/math.hpp
   lib/dmitigr/internal/memory.hpp
@@ -122,7 +126,7 @@ set(dmitigr_internal_headers
   lib/dmitigr/internal/os.hpp
   lib/dmitigr/internal/stream.hpp
   lib/dmitigr/internal/string.hpp
-)
+  )
 
 set(dmitigr_internal_transunits
   lib/dmitigr/internal/config.cpp
@@ -132,7 +136,14 @@ set(dmitigr_internal_transunits
   lib/dmitigr/internal/os.cpp
   lib/dmitigr/internal/stream.cpp
   lib/dmitigr/internal/string.cpp
-)
+  )
+
+set(dmitigr_internal_sources
+  ${dmitigr_internal_root_headers}
+  ${dmitigr_internal_header_only_headers}
+  ${dmitigr_internal_headers}
+  ${dmitigr_internal_transunits}
+  )
 
 # ------------------------------------------------------------------------------
 # Dependencies
@@ -169,7 +180,7 @@ if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
     set(dmitigr_internal_target "dmitigr_internal_static")
   endif()
 
-  add_library(${dmitigr_internal_target} ${dmitigr_internal_root_headers} ${dmitigr_internal_headers} ${dmitigr_internal_transunits})
+  add_library(${dmitigr_internal_target} ${dmitigr_internal_sources})
 
   if(BUILD_SHARED_LIBS)
     target_compile_definitions(dmitigr_internal PUBLIC -DDMITIGR_INTERNAL_DLL)
@@ -220,6 +231,11 @@ install(FILES ${dmitigr_internal_root_headers}
 
 install(FILES ${dmitigr_internal_headers}
   DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR}/dmitigr/internal)
+
+if(DMITIGR_INTERNAL_HEADER_ONLY)
+  install(FILES ${dmitigr_internal_header_only_headers}
+    DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR}/dmitigr/internal)
+endif()
 
 if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
   install(TARGETS ${dmitigr_internal_target}

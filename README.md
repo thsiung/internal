@@ -36,6 +36,12 @@ Details:
 |:-------------|:--------------|:--------------|:-----------------|
 |**The type of the build**||||
 |CMAKE_BUILD_TYPE|Debug \| Release \| RelWithDebInfo \| MinSizeRel|Debug|Debug|
+|**The flag to build the shared library**||||
+|BUILD_SHARED_LIBS|On \| Off|Off|Off|
+|**The flag to only install the header-only library**||||
+|DMITIGR_INTERNAL_HEADER_ONLY|On \| Off|On|On|
+|**The flag to debug the librarian CMake framework**||||
+|DMITIGR_INTERNAL_LIBRARIAN_DEBUG|On \| Off|Off|Off|
 |**Installation directories**||||
 |CMAKE_INSTALL_PREFIX|*an absolute path*|"/usr/local"|"%ProgramFiles%\dmitigr_internal"|
 |DMITIGR_INTERNAL_CMAKE_INSTALL_DIR|*a path relative to CMAKE_INSTALL_PREFIX*|"share/dmitigr_internal/cmake"|"cmake"|
