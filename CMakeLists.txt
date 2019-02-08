@@ -146,25 +146,6 @@ set(dmitigr_internal_sources
   )
 
 # ------------------------------------------------------------------------------
-# Dependencies
-# ------------------------------------------------------------------------------
-
-# GraphicsMagick
-find_package(GraphicsMagick)
-if (GraphicsMagick_FOUND)
-  message("Found GraphicsMagick++ headers at: ${GraphicsMagick_INCLUDE_DIRS}")
-  list(APPEND dmitigr_internal_headers graphicsmagick.hpp)
-  list(APPEND dmitigr_internal_transunits graphicsmagick.cpp)
-  include_directories(${GraphicsMagick_INCLUDE_DIRS})
-  if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
-    target_link_libraries(${dmitigr_internal_target} ${Suggested_GraphicsMagick_LIBRARIES})
-  else()
-    target_link_libraries(dmitigr_internal_interface INTERFACE ${Suggested_GraphicsMagick_LIBRARIES})
-  endif()
-  target_compile_definitions(${dmitigr_internal_target} PUBLIC -DDMITIGR_INTERNAL_GRAPHICSMAGICK)
-endif()
-
-# ------------------------------------------------------------------------------
 # Targets
 # ------------------------------------------------------------------------------
 
@@ -194,19 +175,45 @@ if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
     DEBUG_POSTFIX "d")
 
   dmitigr_target_compile_options(${dmitigr_internal_target})
-
-  if (UNIX)
-    target_link_libraries(${dmitigr_internal_target} stdc++fs)
-  elseif (WIN32)
-    target_link_libraries(${dmitigr_internal_target} Ws2_32.lib)
-  endif()
 else() # for header-only
   set(dmitigr_internal_target "dmitigr_internal_interface")
 
   add_library(dmitigr_internal_interface INTERFACE)
 
   target_compile_definitions(dmitigr_internal_interface INTERFACE -DDMITIGR_INTERNAL_HEADER_ONLY)
+endif()
 
+# ------------------------------------------------------------------------------
+# Dependencies
+# ------------------------------------------------------------------------------
+
+#
+# GraphicsMagick
+#
+
+find_package(GraphicsMagick)
+if (GraphicsMagick_FOUND)
+  message("Found GraphicsMagick++ headers at: ${GraphicsMagick_INCLUDE_DIRS}")
+  list(APPEND dmitigr_internal_headers graphicsmagick.hpp)
+  list(APPEND dmitigr_internal_transunits graphicsmagick.cpp)
+  include_directories(${GraphicsMagick_INCLUDE_DIRS})
+  target_compile_definitions(${dmitigr_internal_target} PUBLIC -DDMITIGR_INTERNAL_GRAPHICSMAGICK)
+  if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
+    target_link_libraries(${dmitigr_internal_target} PRIVATE ${Suggested_GraphicsMagick_LIBRARIES})
+  else()
+    target_link_libraries(dmitigr_internal_interface INTERFACE ${Suggested_GraphicsMagick_LIBRARIES})
+  endif()
+endif()
+
+# --------------------------------------
+
+if(NOT DMITIGR_INTERNAL_HEADER_ONLY)
+  if (UNIX)
+    target_link_libraries(${dmitigr_internal_target} PRIVATE stdc++fs)
+  elseif (WIN32)
+    target_link_libraries(${dmitigr_internal_target} PRIVATE Ws2_32.lib)
+  endif()
+else()
   if (UNIX)
     target_link_libraries(dmitigr_internal_interface INTERFACE stdc++fs)
   elseif (WIN32)
