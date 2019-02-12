@@ -11,10 +11,10 @@
 
 namespace str = dmitigr::internal::string;
 
-DMITIGR_INLINE const char* str::next_non_space_pointer(const char* p) noexcept
+DMITIGR_INLINE const char* str::next_non_space_pointer(const char* p, const std::locale& loc) noexcept
 {
   if (p)
-    while (*p != '\0' && std::isspace(*p, std::locale{}))
+    while (*p != '\0' && std::isspace(*p, loc))
       ++p;
   return p;
 }
@@ -99,51 +99,68 @@ DMITIGR_INLINE void str::terminate_string(std::string& str, const char c)
     str += c;
 }
 
-DMITIGR_INLINE void str::lowercase(std::string& str)
+DMITIGR_INLINE void str::lowercase(std::string& str, const std::locale& loc)
 {
   auto b = begin(str);
   auto e = end(str);
-  const auto l = std::locale{};
-  std::transform(b, e, b, [&l](const char c) { return std::tolower(c, l); });
+  std::transform(b, e, b, [&loc](const char c) { return std::tolower(c, loc); });
 }
 
-DMITIGR_INLINE void str::uppercase(std::string& str)
+DMITIGR_INLINE std::string str::to_lowercase(const std::string& str, const std::locale& loc)
+{
+  std::string result{str};
+  lowercase(result, loc);
+  return result;
+}
+
+DMITIGR_INLINE void str::uppercase(std::string& str, const std::locale& loc)
 {
   auto b = begin(str);
   auto e = end(str);
-  const auto l = std::locale{};
-  std::transform(b, e, b, [&l](const char c) { return std::toupper(c, l); });
+  std::transform(b, e, b, [&loc](const char c) { return std::toupper(c, loc); });
+}
+
+DMITIGR_INLINE std::string str::to_uppercase(const std::string& str, const std::locale& loc)
+{
+  std::string result{str};
+  uppercase(result, loc);
+  return result;
 }
 
 // -----------------------------------------------------------------------------
 
 DMITIGR_INLINE std::string::size_type str::position_of_non_space(const std::string& str,
-  const std::string::size_type pos)
+  const std::string::size_type pos, const std::locale& loc)
 {
   DMITIGR_INTERNAL_ASSERT(pos <= str.size());
+  using namespace std::placeholders;
   const auto b = cbegin(str);
-  return std::find_if(b + pos, cend(str), is_non_space_character) - b;
+  return std::find_if(b + pos, cend(str), std::bind(is_non_space_character, _1, loc)) - b;
 }
 
 DMITIGR_INLINE std::pair<std::string, std::string::size_type>
-str::substring_if_simple_identifier(const std::string& str, const std::string::size_type pos)
+str::substring_if_simple_identifier(const std::string& str,
+  const std::string::size_type pos, const std::locale& loc)
 {
   DMITIGR_INTERNAL_ASSERT(pos <= str.size());
-  return std::isalpha(str[pos], std::locale{}) ? substring_if(str, is_simple_identifier_character, pos) :
+  using namespace std::placeholders;
+  return std::isalpha(str[pos], loc) ? substring_if(str, std::bind(is_simple_identifier_character, _1, loc), pos) :
     std::make_pair(std::string{}, pos);
 }
 
 DMITIGR_INLINE std::pair<std::string, std::string::size_type>
-str::substring_if_no_spaces(const std::string& str, const std::string::size_type pos)
+str::substring_if_no_spaces(const std::string& str, const std::string::size_type pos, const std::locale& loc)
 {
-  return substring_if(str, is_non_space_character, pos);
+  using namespace std::placeholders;
+  return substring_if(str, std::bind(is_non_space_character, _1, loc), pos);
 }
 // -----------------------------------------------------------------------------
 
 DMITIGR_INLINE std::pair<std::string, std::string::size_type>
-str::unquoted_substring(const std::string& str, std::string::size_type pos)
+str::unquoted_substring(const std::string& str, std::string::size_type pos, const std::locale& loc)
 {
   DMITIGR_INTERNAL_ASSERT(pos <= str.size());
+  using namespace std::placeholders;
   if (pos == str.size())
     return {std::string{}, pos};
 
@@ -180,6 +197,6 @@ str::unquoted_substring(const std::string& str, std::string::size_type pos)
     else
       result.second = pos + 1; // discarding the trailing quote
   } else
-    result = substring_if_no_spaces(str, pos);
+    result = substring_if_no_spaces(str, pos, loc);
   return result;
 }

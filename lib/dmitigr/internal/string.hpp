@@ -11,7 +11,9 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstring>
+#include <functional>
 #include <initializer_list>
+#include <limits>
 #include <locale>
 #include <string>
 #include <utility>
@@ -27,7 +29,7 @@ namespace dmitigr::internal::string {
  * @returns The pointer to the next non-space character, or pointer to the
  * terminating zero character.
  */
-DMITIGR_INTERNAL_API const char* next_non_space_pointer(const char* p) noexcept;
+DMITIGR_INTERNAL_API const char* next_non_space_pointer(const char* p, const std::locale& loc = {}) noexcept;
 
 /**
  * @internal
@@ -73,9 +75,9 @@ std::pair<std::size_t, std::size_t> line_column_numbers_by_position(const std::s
  *
  * @returns `true` if `c` is a valid space character.
  */
-inline bool is_space_character(const char c)
+inline bool is_space_character(const char c, const std::locale& loc = {})
 {
-  return std::isspace(c, std::locale{});
+  return std::isspace(c, loc);
 }
 
 /**
@@ -83,9 +85,9 @@ inline bool is_space_character(const char c)
  *
  * @returns !is_space_character(c);
  */
-inline bool is_non_space_character(const char c)
+inline bool is_non_space_character(const char c, const std::locale& loc = {})
 {
-  return !is_space_character(c);
+  return !is_space_character(c, loc);
 }
 
 /**
@@ -93,9 +95,9 @@ inline bool is_non_space_character(const char c)
  *
  * @returns `true` if `c` is a valid simple identifier character.
  */
-inline bool is_simple_identifier_character(const char c)
+inline bool is_simple_identifier_character(const char c, const std::locale& loc = {})
 {
-  return std::isalnum(c, std::locale{}) || c == '_';
+  return std::isalnum(c, loc) || c == '_';
 }
 
 /**
@@ -103,9 +105,9 @@ inline bool is_simple_identifier_character(const char c)
  *
  * @returns !is_simple_identifier_character(c).
  */
-inline bool is_non_simple_identifier_character(const char c)
+inline bool is_non_simple_identifier_character(const char c, const std::locale& loc = {})
 {
-  return !is_simple_identifier_character(c);
+  return !is_simple_identifier_character(c, loc);
 }
 
 /**
@@ -113,9 +115,10 @@ inline bool is_non_simple_identifier_character(const char c)
  *
  * @returns `true` if `str` has at least one space character.
  */
-inline bool has_space(const std::string& str)
+inline bool has_space(const std::string& str, const std::locale& loc = {})
 {
-  return std::any_of(cbegin(str), cend(str), is_space_character);
+  using namespace std::placeholders;
+  return std::any_of(cbegin(str), cend(str), std::bind(is_space_character, _1, loc));
 }
 
 // -----------------------------------------------------------------------------
@@ -161,14 +164,30 @@ DMITIGR_INTERNAL_API void terminate_string(std::string& str, char c);
  *
  * Replaces all uppercase characters in `str` by the corresponding lowercase characters.
  */
-DMITIGR_INTERNAL_API void lowercase(std::string& str);
+DMITIGR_INTERNAL_API void lowercase(std::string& str, const std::locale& loc = {});
+
+/**
+ * @internal
+ *
+ * @returns The modified copy of the `str` with all uppercase characters replaced by the
+ * corresponding lowercase characters.
+ */
+DMITIGR_INTERNAL_API std::string to_lowercase(const std::string& str, const std::locale& loc = {});
 
 /**
  * @internal
  *
  * Replaces all lowercase characters in `str` by the corresponding uppercase characters.
  */
-DMITIGR_INTERNAL_API void uppercase(std::string& str);
+DMITIGR_INTERNAL_API void uppercase(std::string& str, const std::locale& loc = {});
+
+/**
+ * @internal
+ *
+ * @returns The modified copy of the `str` with all lowercase characters replaced by the
+ * corresponding uppercase characters.
+ */
+DMITIGR_INTERNAL_API std::string to_uppercase(const std::string& str, const std::locale& loc = {});
 
 // -----------------------------------------------------------------------------
 // Substrings
@@ -176,7 +195,8 @@ DMITIGR_INTERNAL_API void uppercase(std::string& str);
 /**
  * @returns The position of the first non-space character of `str` in range [pos, str.size()).
  */
-DMITIGR_INTERNAL_API std::string::size_type position_of_non_space(const std::string& str, std::string::size_type pos);
+DMITIGR_INTERNAL_API std::string::size_type position_of_non_space(const std::string& str,
+  std::string::size_type pos, const std::locale& loc = {});
 
 /**
  * @returns The substring of `str` from position of `pos` until the position
@@ -184,13 +204,14 @@ DMITIGR_INTERNAL_API std::string::size_type position_of_non_space(const std::str
  * position of the character followed "c" as the second element.
  */
 template<typename Pred>
-std::pair<std::string, std::string::size_type> substring_if(const std::string& str, Pred pred, std::string::size_type pos)
+std::pair<std::string, std::string::size_type> substring_if(const std::string& str, Pred pred,
+  std::string::size_type pos, const std::locale& loc = {})
 {
   DMITIGR_INTERNAL_ASSERT(pos <= str.size());
   std::pair<std::string, std::string::size_type> result;
   const auto input_size = str.size();
   for (; pos < input_size; ++pos) {
-    if (pred(str[pos]))
+    if (pred(str[pos], loc))
       result.first += str[pos];
     else
       break;
@@ -204,14 +225,16 @@ std::pair<std::string, std::string::size_type> substring_if(const std::string& s
  * as the first element, and the position of the next character in `str`.
  */
 DMITIGR_INTERNAL_API
-std::pair<std::string, std::string::size_type> substring_if_simple_identifier(const std::string& str, std::string::size_type pos);
+std::pair<std::string, std::string::size_type> substring_if_simple_identifier(const std::string& str,
+  std::string::size_type pos, const std::locale& loc = {});
 
 /**
  * @returns The substring of `str` with no spaces from position of `pos`
  * as the first element, and the position of the next character in `str`.
  */
 DMITIGR_INTERNAL_API
-std::pair<std::string, std::string::size_type> substring_if_no_spaces(const std::string& str, std::string::size_type pos);
+std::pair<std::string, std::string::size_type> substring_if_no_spaces(const std::string& str,
+  std::string::size_type pos, const std::locale& loc = {});
 
 /**
  * @returns The unquoted substring of `str` if `str[pos] == '\''` or the substring
@@ -219,7 +242,8 @@ std::pair<std::string, std::string::size_type> substring_if_no_spaces(const std:
  * of the next character in `str`.
  */
 DMITIGR_INTERNAL_API
-std::pair<std::string, std::string::size_type> unquoted_substring(const std::string& str, std::string::size_type pos);
+std::pair<std::string, std::string::size_type> unquoted_substring(const std::string& str,
+  std::string::size_type pos, const std::locale& loc = {});
 
 // -----------------------------------------------------------------------------
 // Sequence converters
@@ -285,6 +309,7 @@ std::enable_if_t<std::is_integral<Number>::value, std::string>
 to_string(Number value, const Number base = 10)
 {
   DMITIGR_INTERNAL_ASSERT(2 <= base && base <= 36);
+  static_assert(std::numeric_limits<Number>::min() <= 2 && std::numeric_limits<Number>::max() >= 36, "");
   static const char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
                                 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
