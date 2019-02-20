@@ -2,7 +2,7 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
-#include "dmitigr/internal/header_only.hpp"
+#include "dmitigr/internal/implementation_header.hpp"
 
 #include "dmitigr/internal/debug.hpp"
 #include "dmitigr/internal/filesystem.hpp"
@@ -10,9 +10,9 @@
 
 #include <stdexcept>
 
-namespace fs = dmitigr::internal::filesystem;
+namespace dmitigr::internal::filesystem {
 
-DMITIGR_INLINE std::vector<std::filesystem::path> fs::files_by_extension(const std::filesystem::path& root,
+DMITIGR_INTERNAL_INLINE std::vector<std::filesystem::path> files_by_extension(const std::filesystem::path& root,
   const std::filesystem::path& extension, const bool recursive, const bool include_heading)
 {
   std::vector<std::filesystem::path> result;
@@ -45,7 +45,7 @@ DMITIGR_INLINE std::vector<std::filesystem::path> fs::files_by_extension(const s
   return result;
 }
 
-DMITIGR_INLINE std::string fs::read_to_string(const std::filesystem::path& path)
+DMITIGR_INTERNAL_INLINE std::string read_to_string(const std::filesystem::path& path)
 {
   std::ifstream stream(path, std::ios_base::in | std::ios_base::binary);
   if (stream)
@@ -54,7 +54,7 @@ DMITIGR_INLINE std::string fs::read_to_string(const std::filesystem::path& path)
     throw std::runtime_error{"unable to open file \"" + path.generic_string() + "\""};
 }
 
-DMITIGR_INLINE std::filesystem::path fs::relative_root_path(const std::filesystem::path& indicator)
+DMITIGR_INTERNAL_INLINE std::filesystem::path relative_root_path(const std::filesystem::path& indicator)
 {
   auto path = std::filesystem::current_path();
   while (true) {
@@ -66,3 +66,7 @@ DMITIGR_INLINE std::filesystem::path fs::relative_root_path(const std::filesyste
       throw std::runtime_error{"no " + indicator.string() + " directory found"};
   }
 }
+
+} // namespace dmitigr::internal::filesystem
+
+#include "dmitigr/internal/implementation_footer.hpp"

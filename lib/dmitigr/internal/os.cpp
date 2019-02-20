@@ -2,7 +2,7 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
-#include "dmitigr/internal/header_only.hpp"
+#include "dmitigr/internal/implementation_header.hpp"
 
 #include "dmitigr/internal/debug.hpp"
 #include "dmitigr/internal/os.hpp"
@@ -44,8 +44,7 @@
 
 #endif
 
-namespace os = dmitigr::internal::os;
-namespace io = os::io;
+namespace dmitigr::internal::os {
 
 namespace {
 
@@ -88,13 +87,13 @@ inline char* dmint_os_cwd()
 
 } // namespace
 
-DMITIGR_INLINE std::string os::current_working_directory()
+DMITIGR_INTERNAL_INLINE std::string current_working_directory()
 {
   std::unique_ptr<char[], void (*)(void*)> guarded{dmint_os_cwd(), &std::free};
   return guarded ? guarded.get() : std::string{};
 }
 
-DMITIGR_INLINE std::string os::current_username()
+DMITIGR_INTERNAL_INLINE std::string current_username()
 {
   std::string result;
 #ifdef _WIN32
@@ -129,7 +128,7 @@ DMITIGR_INLINE std::string os::current_username()
   return result;
 }
 
-DMITIGR_INLINE std::optional<std::string> os::environment_variable(const std::string& name)
+DMITIGR_INTERNAL_INLINE std::optional<std::string> environment_variable(const std::string& name)
 {
 #ifdef _WIN32
   const std::unique_ptr<char, void(*)(void*)> buffer{nullptr, &std::free};
@@ -145,7 +144,9 @@ DMITIGR_INLINE std::optional<std::string> os::environment_variable(const std::st
 
 // -----------------------------------------------------------------------------
 
-DMITIGR_INLINE std::size_t io::seek(const int fd, long const offset, const Origin whence)
+namespace io {
+
+DMITIGR_INTERNAL_INLINE std::size_t seek(const int fd, long const offset, const Origin whence)
 {
 #ifdef _WIN32
   const auto result = ::_lseek(fd, offset, int(whence));
@@ -160,7 +161,7 @@ DMITIGR_INLINE std::size_t io::seek(const int fd, long const offset, const Origi
     return std::size_t(result);
 }
 
-DMITIGR_INLINE std::size_t io::read(const int fd, void* const buffer, const unsigned int count)
+DMITIGR_INTERNAL_INLINE std::size_t read(const int fd, void* const buffer, const unsigned int count)
 {
   DMITIGR_INTERNAL_ASSERT(buffer);
 
@@ -176,3 +177,9 @@ DMITIGR_INLINE std::size_t io::read(const int fd, void* const buffer, const unsi
   } else
     return std::size_t(result);
 }
+
+} // namespace io
+
+} // namespace dmitigr::internal::os
+
+#include "dmitigr/internal/implementation_footer.hpp"

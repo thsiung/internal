@@ -2,7 +2,7 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
-#include "dmitigr/internal/header_only.hpp"
+#include "dmitigr/internal/implementation_header.hpp"
 
 #include "dmitigr/internal/debug.hpp"
 #include "dmitigr/internal/stream.hpp"
@@ -10,64 +10,60 @@
 #include <istream>
 #include <locale>
 
-namespace stream = dmitigr::internal::stream;
-
 namespace dmitigr::internal::stream {
 
-DMITIGR_INLINE Read_exception::Read_exception(const std::error_condition condition)
+DMITIGR_INTERNAL_INLINE Read_exception::Read_exception(const std::error_condition condition)
   : system_error{condition.value(), error_category()}
 {}
 
-DMITIGR_INLINE Read_exception::Read_exception(std::error_condition condition, std::string&& incomplete_result)
+DMITIGR_INTERNAL_INLINE Read_exception::Read_exception(std::error_condition condition, std::string&& incomplete_result)
   : system_error{condition.value(), error_category()}
   , incomplete_result_{std::move(incomplete_result)}
 {}
 
-DMITIGR_INLINE const std::string& Read_exception::incomplete_result() const
+DMITIGR_INTERNAL_INLINE const std::string& Read_exception::incomplete_result() const
 {
   return incomplete_result_;
 }
 
-DMITIGR_INLINE const char* Read_exception::what() const noexcept
+DMITIGR_INTERNAL_INLINE const char* Read_exception::what() const noexcept
 {
   return "dmitigr::internal::stream::Read_exception";
 }
 
 // -----------------------------------------------------------------------------
 
-DMITIGR_INLINE const char* Error_category::name() const noexcept
+DMITIGR_INTERNAL_INLINE const char* Error_category::name() const noexcept
 {
   return "dmitigr_internal_stream_error";
 }
 
-DMITIGR_INLINE std::string Error_category::message(const int ev) const
+DMITIGR_INTERNAL_INLINE std::string Error_category::message(const int ev) const
 {
   return "dmitigr_internal_stream_error " + std::to_string(ev);
 }
 
-} // namespace dmitigr::internal::stream
-
 // -----------------------------------------------------------------------------
 
-DMITIGR_INLINE auto stream::error_category() noexcept -> const Error_category&
+DMITIGR_INTERNAL_INLINE auto error_category() noexcept -> const Error_category&
 {
   static Error_category result;
   return result;
 }
 
-DMITIGR_INLINE std::error_code stream::make_error_code(Read_errc errc) noexcept
+DMITIGR_INTERNAL_INLINE std::error_code make_error_code(Read_errc errc) noexcept
 {
   return std::error_code(int(errc), error_category());
 }
 
-DMITIGR_INLINE std::error_condition stream::make_error_condition(Read_errc errc) noexcept
+DMITIGR_INTERNAL_INLINE std::error_condition make_error_condition(Read_errc errc) noexcept
 {
   return std::error_condition(int(errc), error_category());
 }
 
 // -----------------------------------------------------------------------------
 
-DMITIGR_INLINE std::string stream::read_to_string(std::istream& input)
+DMITIGR_INTERNAL_INLINE std::string read_to_string(std::istream& input)
 {
   constexpr std::size_t buffer_size{512};
   std::string result;
@@ -78,7 +74,7 @@ DMITIGR_INLINE std::string stream::read_to_string(std::istream& input)
   return result;
 }
 
-DMITIGR_INLINE std::string stream::read_simple_phrase_to_string(std::istream& input)
+DMITIGR_INTERNAL_INLINE std::string read_simple_phrase_to_string(std::istream& input)
 {
   std::string result;
 
@@ -137,3 +133,7 @@ DMITIGR_INLINE std::string stream::read_simple_phrase_to_string(std::istream& in
 
   return result;
 }
+
+} // namespace dmitigr::internal::stream
+
+#include "dmitigr/internal/implementation_footer.hpp"

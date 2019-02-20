@@ -4,8 +4,8 @@
 
 #ifndef DMITIGR_INTERNAL_CONFIG_HPP
 #define DMITIGR_INTERNAL_CONFIG_HPP
-
 #include "dmitigr/internal/dll.hpp"
+
 #include "dmitigr/internal/filesystem.hpp"
 
 #include <map>

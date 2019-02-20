@@ -2,7 +2,7 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
-#include "dmitigr/internal/header_only.hpp"
+#include "dmitigr/internal/implementation_header.hpp"
 
 #include "dmitigr/internal/console.hpp"
 #include "dmitigr/internal/debug.hpp"
@@ -11,7 +11,7 @@
 
 namespace dmitigr::internal::console {
 
-DMITIGR_INLINE void Command::throw_invalid_usage(std::string details) const
+DMITIGR_INTERNAL_INLINE void Command::throw_invalid_usage(std::string details) const
 {
   std::string message = "invalid usage of the \"" + name() + "\" command\n";
   if (!details.empty())
@@ -19,7 +19,7 @@ DMITIGR_INLINE void Command::throw_invalid_usage(std::string details) const
   throw std::logic_error{std::move(message.append(usage()))};
 }
 
-DMITIGR_INLINE std::optional<std::string> Command::option_argument(const std::string& value, const bool is_optional) const
+DMITIGR_INTERNAL_INLINE std::optional<std::string> Command::option_argument(const std::string& value, const bool is_optional) const
 {
   if (const auto pos = value.find('='); pos != std::string::npos)
     return pos < value.size() ? value.substr(pos + 1) : std::string{};
@@ -29,7 +29,7 @@ DMITIGR_INLINE std::optional<std::string> Command::option_argument(const std::st
     throw_invalid_usage("no argument for the \"" + value.substr(0, pos) + "\" option specified");
 }
 
-DMITIGR_INLINE void Command::check_no_option_argument(const std::string& value) const
+DMITIGR_INTERNAL_INLINE void Command::check_no_option_argument(const std::string& value) const
 {
   DMITIGR_INTERNAL_ASSERT(value.find("--") == 0);
   if (const auto pos = value.find('='); pos != std::string::npos)
@@ -44,18 +44,14 @@ DMITIGR_INLINE void Command::check_no_option_argument(const std::string& value) 
  * @param parse_option - The callback that will be called for each option.
  * The parser must accepts one argument: the string of the option to parse.
  */
-DMITIGR_INLINE auto Command::parse_options(Option_iterator i, const Option_iterator e, Option_parser parse_option) -> Option_iterator
+DMITIGR_INTERNAL_INLINE auto Command::parse_options(Option_iterator i, const Option_iterator e, Option_parser parse_option) -> Option_iterator
 {
   for (; i != e && *i != "--" && (i->find("--") == 0); ++i)
     parse_option(*i);
   return i;
 }
 
-} // namespace dmitigr::internal::console
-
-namespace console = dmitigr::internal::console;
-
-DMITIGR_INLINE std::pair<std::string, std::vector<std::string>> console::command_and_options(const int argc, const char* const* argv)
+DMITIGR_INTERNAL_INLINE std::pair<std::string, std::vector<std::string>> command_and_options(const int argc, const char* const* argv)
 {
   DMITIGR_INTERNAL_ASSERT(argc > 1);
   std::string result1{argv[1]};
@@ -64,3 +60,7 @@ DMITIGR_INLINE std::pair<std::string, std::vector<std::string>> console::command
     result2.push_back(argv[i]);
   return std::make_pair(result1, result2);
 }
+
+} // namespace dmitigr::internal::console
+
+#include "dmitigr/internal/implementation_footer.hpp"

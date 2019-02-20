@@ -4,7 +4,6 @@
 
 #ifndef DMITIGR_INTERNAL_NET_HPP
 #define DMITIGR_INTERNAL_NET_HPP
-
 #include "dmitigr/internal/dll.hpp"
 
 #include <string>

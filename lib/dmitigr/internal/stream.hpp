@@ -4,7 +4,6 @@
 
 #ifndef DMITIGR_INTERNAL_STREAM_HPP
 #define DMITIGR_INTERNAL_STREAM_HPP
-
 #include "dmitigr/internal/dll.hpp"
 
 #include <iosfwd>

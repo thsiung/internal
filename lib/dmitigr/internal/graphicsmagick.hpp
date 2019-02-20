@@ -4,7 +4,6 @@
 
 #ifndef DMITIGR_INTERNAL_GRAPHICSMAGICK_HPP
 #define DMITIGR_INTERNAL_GRAPHICSMAGICK_HPP
-
 #include "dmitigr/internal/dll.hpp"
 
 #include <iosfwd>

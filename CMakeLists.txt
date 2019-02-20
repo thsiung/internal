@@ -107,7 +107,8 @@ set(dmitigr_internal_root_headers
   )
 
 set(dmitigr_internal_header_only_headers
-  lib/dmitigr/internal/header_only.hpp
+  lib/dmitigr/internal/implementation_header.hpp
+  lib/dmitigr/internal/implementation_footer.hpp
   )
 
 set(dmitigr_internal_headers
@@ -129,9 +130,6 @@ set(dmitigr_internal_headers
   )
 
 set(dmitigr_internal_implementations
-  )
-
-set(dmitigr_internal_transunits
   lib/dmitigr/internal/config.cpp
   lib/dmitigr/internal/console.cpp
   lib/dmitigr/internal/filesystem.cpp
@@ -139,6 +137,10 @@ set(dmitigr_internal_transunits
   lib/dmitigr/internal/os.cpp
   lib/dmitigr/internal/stream.cpp
   lib/dmitigr/internal/string.cpp
+  )
+
+set(dmitigr_internal_transunits
+  lib/dmitigr/internal/tu.cpp
   )
 
 set(dmitigr_internal_sources
@@ -266,7 +268,7 @@ else()
     EXPORT dmitigr_internal_interface_export
     INCLUDES DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR})
 
-  install(FILES ${dmitigr_internal_transunits} ${dmitigr_internal_implementations}
+  install(FILES ${dmitigr_internal_implementations}
     DESTINATION ${DMITIGR_INTERNAL_INCLUDE_INSTALL_DIR}/dmitigr/internal)
 endif()
 

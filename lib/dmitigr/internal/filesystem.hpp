@@ -4,8 +4,8 @@
 
 #ifndef DMITIGR_INTERNAL_FILESYSTEM_HPP
 #define DMITIGR_INTERNAL_FILESYSTEM_HPP
-
 #include "dmitigr/internal/dll.hpp"
+
 #include "dmitigr/internal/filesystem_experimental.hpp"
 
 #include <fstream>

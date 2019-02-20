@@ -4,7 +4,6 @@
 
 #ifndef DMITIGR_INTERNAL_CONSOLE_HPP
 #define DMITIGR_INTERNAL_CONSOLE_HPP
-
 #include "dmitigr/internal/dll.hpp"
 
 #include <functional>
