@@ -121,6 +121,13 @@ inline bool has_space(const std::string& str, const std::locale& loc = {})
   return std::any_of(cbegin(str), cend(str), std::bind(is_space_character, _1, loc));
 }
 
+/**
+ * @internal
+ *
+ * @returns `true` if `input` is starting with `pattern`.
+ */
+bool is_begins_with(std::string_view input, std::string_view pattern);
+
 // -----------------------------------------------------------------------------
 // Generators
 
@@ -188,6 +195,20 @@ DMITIGR_INTERNAL_API void uppercase(std::string& str, const std::locale& loc = {
  * corresponding uppercase characters.
  */
 DMITIGR_INTERNAL_API std::string to_uppercase(const std::string& str, const std::locale& loc = {});
+
+/**
+ * @internal
+ *
+ * @returns `true` if all of character of `str` are in uppercase, or `false` otherwise.
+ */
+DMITIGR_INTERNAL_API bool is_lowercased(std::string_view str, const std::locale& loc = {});
+
+/**
+ * @internal
+ *
+ * @returns `true` if all of character of `str` are in lowercase, or `false` otherwise.
+ */
+DMITIGR_INTERNAL_API bool is_uppercased(std::string_view str, const std::locale& loc = {});
 
 // -----------------------------------------------------------------------------
 // Substrings

@@ -61,4 +61,27 @@ constexpr bool is_debug_enabled = true;
 #define DMITIGR_INTERNAL_REQUIRE(req)       DMITIGR_INTERNAL_REQUIRE__(req, req)
 #define DMITIGR_INTERNAL_REQUIRE2(req, msg) DMITIGR_INTERNAL_REQUIRE__(req, msg)
 
+namespace dmitigr::internal::debug {
+
+class Requirements_violation : public std::logic_error {
+public:
+  explicit Requirements_violation(std::string context)
+    : logic_error{std::string{"API requirement violated in the following context: "}.append(std::move(context))}
+  {}
+
+  Requirements_violation(std::string requirement, std::string context)
+    : logic_error{std::string{"API requirement ("}.append(std::move(requirement))
+                  .append(") violated in the following context: ").append(std::move(context))}
+  {}
+};
+
+template<typename T, typename ... Types>
+inline void require(const T& req, Types&& ... args)
+{
+  if (!req)
+    throw Requirements_violation{std::forward<Types>(args)...};
+}
+
+} // namespace dmitigr::internal::debug
+
 #endif  // DMITIGR_INTERNAL_DEBUG_HPP

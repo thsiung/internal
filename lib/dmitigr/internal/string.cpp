@@ -27,6 +27,8 @@ DMITIGR_INLINE const char* str::coalesce(std::initializer_list<const char*> lite
   return nullptr;
 }
 
+// -----------------------------------------------------------------------------
+
 DMITIGR_INLINE std::size_t str::line_number_by_position(const std::string& str, const std::size_t pos)
 {
   DMITIGR_INTERNAL_ASSERT(pos < str.size());
@@ -46,6 +48,13 @@ str::line_column_numbers_by_position(const std::string& str, const std::size_t p
     }
   }
   return std::make_pair(line + 1, column + 1);
+}
+
+// -----------------------------------------------------------------------------
+
+DMITIGR_INLINE bool str::is_begins_with(std::string_view input, std::string_view pattern)
+{
+  return (pattern.size() <= input.size()) && std::equal(cbegin(input), cend(input), cbegin(pattern));
 }
 
 // -----------------------------------------------------------------------------
@@ -125,6 +134,16 @@ DMITIGR_INLINE std::string str::to_uppercase(const std::string& str, const std::
   std::string result{str};
   uppercase(result, loc);
   return result;
+}
+
+DMITIGR_INLINE bool str::is_lowercased(std::string_view str, const std::locale& loc)
+{
+  return std::all_of(cbegin(str), cend(str), [&loc](const char c) { return std::islower(c, loc); });
+}
+
+DMITIGR_INLINE bool str::is_uppercased(std::string_view str, const std::locale& loc)
+{
+  return std::all_of(cbegin(str), cend(str), [&loc](const char c) { return std::isupper(c, loc); });
 }
 
 // -----------------------------------------------------------------------------
