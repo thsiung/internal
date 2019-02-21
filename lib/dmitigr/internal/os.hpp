@@ -4,6 +4,7 @@
 
 #ifndef DMITIGR_INTERNAL_OS_HPP
 #define DMITIGR_INTERNAL_OS_HPP
+
 #include "dmitigr/internal/dll.hpp"
 
 #include <cstddef>

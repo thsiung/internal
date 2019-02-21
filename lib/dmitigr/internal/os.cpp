@@ -2,8 +2,6 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
-#include "dmitigr/internal/implementation_header.hpp"
-
 #include "dmitigr/internal/debug.hpp"
 #include "dmitigr/internal/os.hpp"
 
@@ -36,13 +34,15 @@
 
 #include <direct.h> // _getcwd()
 
-#else
+#else // Unix
 
 #include <pwd.h>
 #include <unistd.h>
 #include <sys/types.h>
 
 #endif
+
+#include "dmitigr/internal/implementation_header.hpp"
 
 namespace dmitigr::internal::os {
 

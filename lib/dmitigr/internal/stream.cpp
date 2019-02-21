@@ -2,13 +2,13 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
-#include "dmitigr/internal/implementation_header.hpp"
-
 #include "dmitigr/internal/debug.hpp"
 #include "dmitigr/internal/stream.hpp"
 
 #include <istream>
 #include <locale>
+
+#include "dmitigr/internal/implementation_header.hpp"
 
 namespace dmitigr::internal::stream {
 

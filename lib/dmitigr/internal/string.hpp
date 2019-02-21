@@ -4,6 +4,7 @@
 
 #ifndef DMITIGR_INTERNAL_STRING_HPP
 #define DMITIGR_INTERNAL_STRING_HPP
+
 #include "dmitigr/internal/dll.hpp"
 
 #include "dmitigr/internal/debug.hpp"

@@ -2,14 +2,14 @@
 // Copyright (C) Dmitry Igrishin
 // For conditions of distribution and use, see files LICENSE.txt or internal.hpp
 
-#include "dmitigr/internal/implementation_header.hpp"
-
 #include "dmitigr/internal/graphicsmagick.hpp"
 
 #include <iostream>
 #include <memory>
 
 #include <GraphicsMagick/Magick++.h>
+
+#include "dmitigr/internal/implementation_header.hpp"
 
 namespace dmitigr::internal::img::graphicsmagick {
 
