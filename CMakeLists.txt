@@ -140,7 +140,7 @@ set(dmitigr_internal_implementations
   )
 
 set(dmitigr_internal_transunits
-  lib/dmitigr/internal/tu.cpp
+  lib/dmitigr/internal.cpp
   )
 
 set(dmitigr_internal_sources
