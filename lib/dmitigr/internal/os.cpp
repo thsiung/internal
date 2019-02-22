@@ -119,7 +119,7 @@ DMITIGR_INTERNAL_INLINE std::string current_username()
   const int s = getpwuid_r(uid, &pwd, buf.get(), bufsz, &pwd_ptr);
   if (pwd_ptr == nullptr) {
     if (s == 0)
-      throw std::logic_error{"current username is unavailable (possible something wrong with the OS)"};
+      throw std::runtime_error{"current username is unavailable (possible something wrong with the OS)"};
     else
       throw std::system_error{s, std::system_category(), "dmitigr::internal::os::current_username()"};
   } else

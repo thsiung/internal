@@ -17,5 +17,28 @@
 #    misrepresented as being the original software.
 # 3. This notice may not be removed or altered from any source distribution.
 
-set(lib dmitigr_internal)
-include(dmitigr_package_finder)
+# This module defines the following variables:
+#   ${lib}_library - the actual name of the ${lib} library. Possible names in
+#   order of preference are:
+#     "${lib}_interface" (header-only);
+#     "${lib}_static" (static);
+#     "${lib}" (shared).
+
+find_package(${lib} CONFIGS ${lib}_interface-config.cmake)
+if(NOT ${lib}_FOUND)
+  find_package(${lib} CONFIGS ${lib}_static-config.cmake)
+  if(NOT ${lib}_FOUND)
+    find_package(${lib})
+    if(NOT ${lib}_FOUND)
+      if (${lib}_FIND_REQUIRED)
+        message(FATAL_ERROR "No ${lib} library found")
+      endif()
+    else()
+      set(${lib}_library ${lib})
+    endif()
+  else()
+    set(${lib}_library ${lib}_static)
+  endif()
+else()
+  set(${lib}_library ${lib}_interface)
+endif()

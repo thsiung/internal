@@ -37,7 +37,7 @@ DMITIGR_INTERNAL_INLINE std::optional<bool> Flat::boolean_parameter(const std::s
     else if (str == "n" || str == "no" || str == "f" || str == "false" || str == "0")
       return false;
     else
-      throw std::logic_error{"invalid value \"" + str + "\" of the boolean parameter \"" + name + "\""};
+      throw std::runtime_error{"invalid value \"" + str + "\" of the boolean parameter \"" + name + "\""};
   } else
     return std::nullopt;
 }
