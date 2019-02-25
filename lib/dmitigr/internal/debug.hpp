@@ -8,6 +8,7 @@
 #include "dmitigr/internal/macros.hpp"
 
 #include <cstdio>
+#include <cstring>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
@@ -83,7 +84,7 @@ namespace detail {
 inline std::string req_vio_msg__(std::string context, const char* const details)
 {
   context.append(": API requirement");
-  if (details)
+  if (details && std::strlen(details) > 0)
     context.append(" (").append(details).append(")");
   context.append(" violated");
   return context;
